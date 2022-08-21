@@ -1,4 +1,5 @@
 import utils.classes as classes
+from utils.methods import logname
 
 #User defined driver sets
 drivers = {
@@ -53,12 +54,12 @@ profiles = [
 files = [
 	classes.file(
         name = ".zshrc",
-	    path = "~",
+	    path = f"/home/{logname()}",
 	    text = "HISTFILE=~/.zsh_history\nHISTSIZE=1000\nSAVEHIST=1000\nsetopt appendhistory\nexport EDITOR=nano\nautoload -Uz compinit promptinit\ncompinit\npromptinit\nprompt walters\nzstyle ':completion:*' menu select\nzstyle ':completion::complete:*' gain-privileges 1"),
 
 	classes.file(
         name = "htoprc",
-	    path = "~/.config/htop",
+	    path = f"/home/{logname()}/.config/htop",
 	    text = "show_cpu_frequency=1\nshow_cpu_temperature=1"),
 
 	classes.file(

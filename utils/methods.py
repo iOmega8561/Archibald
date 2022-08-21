@@ -1,5 +1,9 @@
 import subprocess
 
+def logname():
+	proc = subprocess_easy("logname")
+	return proc.stdout.rstrip("\n")
+
 def integer_get(prompt, errStr):
 	while True:
 		try:
@@ -35,8 +39,9 @@ def subprocess_watch(command, match, mode):
 	else:
 		return False
 
-def pacman_install(packages, errStr):
+def pacman_install(packages, succStr, errStr = None):
 	try:
 		proc = subprocess_easy(["pacman", "-S", "--needed", "--noconfirm", "--quiet"] + packages, "pacman.log")
+		print(succStr)
 	except subprocess.CalledProcessError:
 		print(errStr)

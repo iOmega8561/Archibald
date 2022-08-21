@@ -26,8 +26,20 @@ def main():
 			print(f"{formats.succStr} Found {device} device!")
 			selection.pkgs += configs.drivers[device]
 
-	print(f"{formats.warnStr} (pacman.log) Invoking PacMan to install packages...")
-	methods.pacman_install(selection.pkgs, f"{formats.errStr} PacMan encountered errors, check pacman.log")
+	print(f"{formats.warnStr} Please wait while PacMan installs packages...")
+	methods.pacman_install(selection.pkgs,
+		f"{formats.succStr} Successfully installed all packages!",
+		f"{formats.errStr} PacMan encountered errors, check pacman.log")
+	
+	print(f"{formats.warnStr} Deploying configuration files...")
+	for i, f in enumerate(configs.files):
+		try:
+			print(f"{f.path}/{f.name}")
+			file = open(f"{f.path}/{f.name}", "w")
+			file.write(f.text)
+		except IOError:
+			print(f"{formats.errStr} Could not open {f.path}{f.name}, exiting...")
+			quit()
 
 if not methods.subprocess_watch("whoami", "root", "compare"):
 	print(f"{formats.errStr} Arcibaldo needs {formats.uline}high{formats.endc} privileges.")
