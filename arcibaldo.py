@@ -16,14 +16,17 @@ def main():
 		index = methods.integer_get(prompt, f"{formats.warnStr} Input not a number, retry.") - 1
 
 	selection = configs.profiles[index]
-	print(f"{formats.msgStr} Selected profile is {selection.name} ({selection.type})\n")
+	print(f"{formats.msgStr} Selected profile is {selection.name} ({selection.type})")
 	
-	if methods.subprocess_watch("lspci", ["VGA?NVIDIA", "Display controller?NVIDIA"], "find"):
-		print(f"{format.succStr} Found Nvidia graphics controller/VGA!")
-	
-	print(f"{formats.msgStr} Using PacMan to setup your profile...")
-	print(f"{formats.warnStr} PacMan will log itself to pacman.log")
-	
+	print(f"{formats.warnStr} Searching for any known graphics device...")
+	pcidevices = methods.subprocess_easy("lspci")
+	for device in configs.drivers:
+		match = [f"VGA compatible controller: {device}", f"Display controller: {device}"]
+		if any(x in pcidevices.stdout.rstrip("\n") for x in match):
+			print(f"{formats.succStr} Found {device} device!")
+			selection.pkgs += configs.drivers[device]
+
+	print(f"{formats.warnStr} (pacman.log) Invoking PacMan to install packages...")
 	methods.pacman_install(selection.pkgs, f"{formats.errStr} PacMan encountered errors, check pacman.log")
 
 if not methods.subprocess_watch("whoami", "root", "compare"):

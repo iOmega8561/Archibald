@@ -1,23 +1,23 @@
 import subprocess
 
 def integer_get(prompt, errStr):
-        while True:
-                try:
-                        i = int(input(prompt))
-                        return i
-                except ValueError:
-                        print(errStr)
+	while True:
+		try:
+			i = int(input(prompt))
+			return i
+		except ValueError:
+			print(errStr)
 
 def subprocess_easy(command, filename = None):
 	if filename != None:
-                file = open(filename, "w")
-                proc = subprocess.run(command,
+		file = open(filename, "w")
+		proc = subprocess.run(command,
 			stdout = file,
 			stderr = subprocess.STDOUT,
 			check = True,
 			text = True)
 	else:
-	        proc = subprocess.run(command,
+		proc = subprocess.run(command,
 			stdout = subprocess.PIPE,
 			stderr = subprocess.STDOUT,
 			check = True,

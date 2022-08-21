@@ -1,11 +1,11 @@
-import classes
+import utils.classes as classes
 
 #User defined driver sets
 drivers = {
-    "RedHat QXL": ["xf86-video-qxl"],
-    "NVIDIA": ["dkms", "nvidia-dkms", "nvidia-prime"],
-    "AMD/ATI": ["xf86-video-amdgpu", "libva-mesa-driver", "vulkan-radeon", "mesa-vdpau"],
-    "Intel": ["xf86-video-intel", "libva-mesa-driver", "vulkan-intel", "mesa-vdpau"]
+    "QXL paravirtual graphic card": ["xf86-video-qxl"],
+    "NVIDIA Corporation": ["dkms", "nvidia-dkms", "nvidia-prime"],
+    "Advanced Micro Devices": ["xf86-video-amdgpu", "libva-mesa-driver", "vulkan-radeon", "mesa-vdpau"],
+    "Intel Corporation": ["xf86-video-intel", "libva-mesa-driver", "vulkan-intel", "mesa-vdpau"]
 }
 
 #User defined package groups
