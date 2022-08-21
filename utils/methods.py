@@ -1,16 +1,25 @@
-import subprocess
+import subprocess, os
 
 def logname():
 	proc = subprocess_easy("logname")
 	return proc.stdout.rstrip("\n")
 
-def integer_get(prompt, errStr):
+def integerget(prompt, errStr):
 	while True:
 		try:
 			i = int(input(prompt))
 			return i
 		except ValueError:
 			print(errStr)
+
+def makefile(path, name, text, errStr):
+	try:
+		os.makedirs(path, exist_ok=True)
+		with open(f"{path}/{name}", "w") as file:
+			file.write(text)
+	except IOError or OSError:
+		print(errStr)
+		quit()
 
 def subprocess_easy(command, filename = None):
 	if filename != None:
@@ -45,3 +54,4 @@ def pacman_install(packages, succStr, errStr = None):
 		print(succStr)
 	except subprocess.CalledProcessError:
 		print(errStr)
+		quit()
