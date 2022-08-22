@@ -1,7 +1,7 @@
 import utilities.classes as classes
 from utilities.methods import subprocess_try
 
-logname = subprocess_try("logname").stdout.rstrip("\n")
+logname = subprocess_try("logname", None, None, None).stdout.rstrip("\n")
 
 #User defined driver sets
 drivers = {
@@ -35,21 +35,24 @@ profiles = [
         type = "Desktop",
         pkgs = pkgroups["Basics"] + pkgroups["DisplayServer"] + pkgroups["PipeWire"] + pkgroups["GnomeMinimal"] + pkgroups["DesktopCommons"],
         units = ["gdm"],
-        groups = []),
+        groups = [],
+        shell = "/bin/zsh"),
 
     classes.profile(
         name = "Plasma",
         type = "Desktop",
         pkgs = pkgroups["Basics"] + pkgroups["DisplayServer"] + pkgroups["PipeWire"] + pkgroups["PlasmaMinimal"] + pkgroups["DesktopCommons"],
         units = ["sddm"],
-        groups = []),
+        groups = [],
+        shell = "/bin/zsh"),
 
     classes.profile(
         name = "Cockpit",
         type = "Server",
         pkgs = pkgroups["Basics"] + pkgroups["CockpitHeadless"],
         units = ["sshd", "libvirtd", "cockpit.socket", "docker"],
-        groups = ["qemu", "libvirt", "docker"])
+        groups = ["qemu", "libvirt", "docker"],
+        shell = "/bin/zsh")
 ]
 
 #User defined basic config files

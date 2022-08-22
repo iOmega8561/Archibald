@@ -4,7 +4,7 @@ def logname():
 	proc = subprocess_easy("logname")
 	return proc.stdout.rstrip("\n")
 
-def integerget(prompt, errStr = None):
+def integerget(prompt, errStr):
 	while True:
 		try:
 			i = int(input(prompt))
@@ -13,7 +13,7 @@ def integerget(prompt, errStr = None):
 			if errStr != None:
 				print(errStr)
 
-def makefile(path, name, text, errStr = None):
+def makefile(path, name, text, errStr):
 	try:
 		os.makedirs(path, exist_ok=True)
 		with open(f"{path}/{name}", "w") as file:
@@ -23,7 +23,7 @@ def makefile(path, name, text, errStr = None):
 			print(errStr)
 		quit()
 
-def subprocess_easy(command, filename = None):
+def subprocess_easy(command, filename):
 	if filename != None:
 		file = open(filename, "w")
 		proc = subprocess.run(command,
@@ -39,7 +39,7 @@ def subprocess_easy(command, filename = None):
 			text = True)
 	return proc
 
-def subprocess_try(command, file = None, succStr = None, errStr = None):
+def subprocess_try(command, file, succStr, errStr):
 	try:
 		proc = subprocess_easy(command, file)
 		if succStr != None:
@@ -51,7 +51,7 @@ def subprocess_try(command, file = None, succStr = None, errStr = None):
 		quit()
 
 def subprocess_watch(command, match, mode):
-	proc = subprocess_try(command)
+	proc = subprocess_try(command, None, None, None)
 	clean = proc.stdout.rstrip("\n")
 	
 	if mode == "all" and all(x in clean for x in match):
