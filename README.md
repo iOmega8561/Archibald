@@ -40,4 +40,4 @@ ExampleProfile = classes.profile(
             text = "sometextto\nbe\nwritten"),          # Text                            | Mandatory
         classes.file( .... )])
 ```
-- Profiles also have a list of file objects, these can be used to define files like .zshrc or .bashrc that will be created by Archibald.
+- Profiles also have a list of file objects, these can be used to define files like .zshrc or .bashrc that will be created by Archibald. A list of global configuration files is also present, these will be merged with profile.files at runtime.

@@ -28,22 +28,7 @@ pkgroups = {
     "DesktopCommons": ["xdg-user-dirs", "xdg-desktop-portal", "libqtxdg", "flatpak", "ttf-liberation", "ttf-droid", "noto-fonts-emoji"]
 }
 
-#   User defined profiles
-
-#   classes.profile(
-#       name = "Example",                                   # Profile name                    | Mandatory
-#       type = "Example",                                   # Target system to be prompt      | Mandatory
-#       pkgs = pkgroups["example"] + pkgroups ["example2"], # One or sum of multiple pkgroups | = [] for none
-#       units = ["test", "example"],                        # List of systemd units to enable | = [] for none
-#       grops = ["wheel", "example"],                       # List of user groups             | = [] for none
-#       shell = "/bin/exampleshell",                        # Custom shell binary             | = None for none
-#       files = [                                           # Profile only config files       | = [] for none
-#           classes.file(
-#               name = "ExampleConfig",                     # File name | Mandatory
-#               path = "example/path",                      # File path | Mandatory
-#               text = "sometextto\nbe\nwritten"),          # Text      | Mandatory
-#           classes.file( .... )])
-
+#user defined profiles
 profiles = [
     classes.profile(
         name = "Gnome",
@@ -51,7 +36,8 @@ profiles = [
         pkgs = pkgroups["Basics"] + pkgroups["DisplayServer"] + pkgroups["PipeWire"] + pkgroups["GnomeMinimal"] + pkgroups["DesktopCommons"],
         units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "gdm"],
         groups = [],
-        shell = "/bin/zsh"),
+        shell = "/bin/zsh",
+        files = []),
 
     classes.profile(
         name = "Plasma",
@@ -59,7 +45,8 @@ profiles = [
         pkgs = pkgroups["Basics"] + pkgroups["DisplayServer"] + pkgroups["PipeWire"] + pkgroups["PlasmaMinimal"] + pkgroups["DesktopCommons"],
         units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "sddm"],
         groups = [],
-        shell = "/bin/zsh"),
+        shell = "/bin/zsh",
+        files = []),
 
     classes.profile(
         name = "Cockpit",
@@ -67,11 +54,12 @@ profiles = [
         pkgs = pkgroups["Basics"] + pkgroups["CockpitHeadless"],
         units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "sshd", "libvirtd", "cockpit.socket", "docker"],
         groups = ["qemu", "libvirt", "docker"],
-        shell = "/bin/zsh")
+        shell = "/bin/zsh",
+        files = [])
 ]
 
-#User defined basic config files
-files = [
+#global configuration files
+globalfiles = [
 	classes.file(
         name = ".zshrc",
 	    path = f"/home/{logname}",
@@ -87,3 +75,7 @@ files = [
 	    path = "/etc/systemd",
 	    text = "[Login]\n#NAutoVTs=6\n#ReserveVT=6\n#KillUserProcesses=no\n#KillOnlyUsers=\n#KillExcludeUsers=root\n#InhibitDelayMaxSec=5\n#UserStopDelaySec=10\n#HandlePowerKey=poweroff\n#HandleSuspendKey=suspend\n#HandleHibernateKey=hibernate\n#HandleLidSwitch=suspend\n#HandleLidSwitchExternalPower=suspend\n#HandleLidSwitchDocked=ignore\n#HandleRebootKey=reboot\n#HandleRebootKeyLongPress=poweroff\n#PowerKeyIgnoreInhibited=no\n#SuspendKeyIgnoreInhibited=no\n#HibernateKeyIgnoreInhibited=no\n#LidSwitchIgnoreInhibited=yes\n#RebootKeyIgnoreInhibited=no\n#HoldoffTimeoutSec=30s\n#IdleAction=ignore\n#IdleActionSec=30min\n#RuntimeDirectorySize=10%\n#RuntimeDirectoryInodesMax=\n#RemoveIPC=yes\n#InhibitorsMax=8192\n#SessionsMax=8192")
 ]
+
+#at runtime global configs will be added to profiles
+for i, p in enumerate(profiles):
+    p.files += globalfiles

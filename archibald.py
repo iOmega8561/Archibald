@@ -46,7 +46,7 @@ def main(logname):
 	
 	#Config files creation
 	print(f"{formats.execStr} Deploying configuration files...")
-	for i, f in enumerate(configs.files):
+	for i, f in enumerate(selection.files):
 		methods.makefile(f.path, f.name, f.text, f"{formats.errStr} Could not open {f.path}{f.name}.")
 	
 	#Archibald runs with root privileges, so files in home will have rw protection
@@ -57,7 +57,7 @@ def main(logname):
 	for i in selection.groups:
 		methods.subprocess_try(["usermod", "-aG", f"{logname}"] + i, None, None, None)
 
-	#Enabling systemd units all at one (systemctl supports it)
+	#Enabling systemd units all at one (systemctl supports multiple arguments)
 	print(f"{formats.execStr} Enabling systemd units...")
 	methods.subprocess_try(["systemctl", "enable"] + selection.units,
 		"systemctl.log", 
