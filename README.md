@@ -12,7 +12,11 @@ Archibald is a configurable python utility that allows to recreate Arch Linux se
 - Change the user shell
 
 ## How to use
-Clone this repository, edit utilities/configs.py to setup things that you want or need, or you can just run Archibald.py and it will already have a couple of pre-configured profiles to choose from. 
+Archibald includes a default configuration, just clone this repository and simply run
+```
+cd Archibald && chmod +x archibald.py && sudo ./archibald
+```
+To configure Archibald edit config.py under the "utils" folder and follow instructions below.
 
 ## Configuration
 Once you get to edit Archibald's configuration, you'll see that it's pretty self explanatory, it comprehends:
