@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-import utils.configs as configs
-import utils.methods as methods
-import utils.formats as formats
+import utilities.configs as configs
+import utilities.methods as methods
+import utilities.formats as formats
 
 def main(logname):
 	#Prepare greeting text
@@ -59,7 +59,10 @@ def main(logname):
 
 	#Enabling systemd units all at one (systemctl supports it)
 	print(f"{formats.warnStr} Enabling systemd units...")
-	methods.subprocess_try(["systemctl", "enable"] + selection.units)
+	methods.subprocess_try(["systemctl", "enable"] + selection.units,
+		"systemctl.log", 
+		f"{formats.succStr} Successfully enabled systemd units!", 
+		f"{formats.errStr} Systemctl encountered errors, check systemctl.log")
 
 if not methods.subprocess_watch("whoami", "root", "all"):
 	#Exit if not executing with sudo
