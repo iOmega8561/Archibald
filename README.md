@@ -7,7 +7,7 @@ Archibald is a configurable python utility that allows to recreate Arch Linux se
 # Usage
 Clone this repository, edit utilities/configs.py to setup things that you want or need, or you can just run Archibald.py and it will already have a couple of pre-configured profiles to choose from. 
 
-#Configuration
+# Configuration
 Once you get to edit Archibald's configuration, you'll see that it's pretty self explanatory, it comprehends:
 - Driver Sets dictionary, in which are defined the necessary packages to get graphics cards working well.
 - Package Groups dictionary, in which are defined bundles of packages, for example the DisplayServer bundle, contains the necessary packages to have a functioning display server on our system. The user defined sum of different groups will be a Profile package list.
