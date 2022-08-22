@@ -4,8 +4,9 @@ This is a personal project, started for fun and personal purposes only. You DO t
 
 ## What's this?
 Archibald is a configurable python utility that allows to recreate Arch Linux setups real fast. Archibald can:
-- Install packages
-- Detect what graphics driver should be installed
+- Prompt the user a selection between profiles
+- Detect QXL/Nvidia/Amd/Intel graphics cards
+- Install packages via PacMan
 - Enable systemd units
 - Add user to certain groups
 - Create configuration files such as .zshrc or htoprc
