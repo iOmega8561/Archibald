@@ -1,9 +1,10 @@
 import utilities.classes as classes
 from utilities.methods import subprocess_try
 
+# Need to know username to find $home
 logname = subprocess_try("logname", None, None, None).stdout.rstrip("\n")
 
-#User defined driver sets
+# User defined driver sets
 drivers = {
     "QXL paravirtual graphic card": ["xf86-video-qxl"],
     "NVIDIA Corporation": ["dkms", "nvidia-dkms", "nvidia-prime"],
@@ -11,7 +12,7 @@ drivers = {
     "Intel Corporation": ["xf86-video-intel", "libva-mesa-driver", "vulkan-intel", "mesa-vdpau"]
 }
 
-#User defined package groups
+# User defined package groups
 pkgroups = {
     "Basics": ["acpi", "acpid", "acpi_call", "base-devel", "zsh", "zsh-completions", "net-tools", "gnu-netcat", "openssh", "git", "nano", "networkmanager", "bluez", "bluez-utils", "cronie", "htop", "ffmpeg", "polkit", "cups", "cups-pdf", "splix"],
 
@@ -28,7 +29,7 @@ pkgroups = {
     "DesktopCommons": ["xdg-user-dirs", "xdg-desktop-portal", "libqtxdg", "flatpak", "ttf-liberation", "ttf-droid", "noto-fonts-emoji"]
 }
 
-#user defined profiles
+# User defined profiles
 profiles = [
     classes.profile(
         name = "Gnome",
@@ -58,7 +59,7 @@ profiles = [
         files = [])
 ]
 
-#global configuration files
+# Global configuration files
 globalfiles = [
 	classes.file(
         name = ".zshrc",
@@ -76,6 +77,6 @@ globalfiles = [
 	    text = "[Login]\n#NAutoVTs=6\n#ReserveVT=6\n#KillUserProcesses=no\n#KillOnlyUsers=\n#KillExcludeUsers=root\n#InhibitDelayMaxSec=5\n#UserStopDelaySec=10\n#HandlePowerKey=poweroff\n#HandleSuspendKey=suspend\n#HandleHibernateKey=hibernate\n#HandleLidSwitch=suspend\n#HandleLidSwitchExternalPower=suspend\n#HandleLidSwitchDocked=ignore\n#HandleRebootKey=reboot\n#HandleRebootKeyLongPress=poweroff\n#PowerKeyIgnoreInhibited=no\n#SuspendKeyIgnoreInhibited=no\n#HibernateKeyIgnoreInhibited=no\n#LidSwitchIgnoreInhibited=yes\n#RebootKeyIgnoreInhibited=no\n#HoldoffTimeoutSec=30s\n#IdleAction=ignore\n#IdleActionSec=30min\n#RuntimeDirectorySize=10%\n#RuntimeDirectoryInodesMax=\n#RemoveIPC=yes\n#InhibitorsMax=8192\n#SessionsMax=8192")
 ]
 
-#at runtime global configs will be added to profiles
+# Global configs will be added to profiles at runtime
 for i, p in enumerate(profiles):
     p.files += globalfiles
