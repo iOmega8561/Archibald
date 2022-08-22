@@ -25,7 +25,7 @@ pkgroups = {
 
     "PlasmaMinimal": ["plasma-desktop", "sddm", "plasma-wayland-session", "dolphin", "systemsettings", "kscreen", "breeze-gtk", "kwallet", "konsole", "bluedevil", "powerdevil", "plasma-nm", "plasma-workspace-wallpapers", "discover", "ark", "kwrite", "kcalc", "spectacle", "krunner", "plasma-disks", "partitionmanager", "packagekit-qt5", "okular", "xdg-desktop-portal-kde"],
 
-    "DesktopCommons": ["xdg-user-dirs", "xdg-desktop-portal", "libqtxdg", "flatpak", "ttf-liberation", "noto-fonts-emoji"]
+    "DesktopCommons": ["xdg-user-dirs", "xdg-desktop-portal", "libqtxdg", "flatpak", "ttf-liberation", "ttf-droid", "noto-fonts-emoji"]
 }
 
 #User defined profiles
