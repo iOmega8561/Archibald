@@ -1,8 +1,8 @@
 import utilities.classes as classes
-from utilities.methods import subprocess_try
+from utilities.methods import subprocessEz
 
 # Need to know username to find $home
-logname = subprocess_try("logname", None, None, None).stdout.rstrip("\n")
+logname = subprocessEz("logname", None, None, None).stdout.rstrip("\n")
 
 # User defined driver sets
 drivers = {

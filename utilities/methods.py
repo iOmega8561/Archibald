@@ -1,62 +1,99 @@
 import subprocess, os
 
 def logname():
-	proc = subprocess_easy("logname")
+	proc = subprocessEz("logname", None, None, None)
 	return proc.stdout.rstrip("\n")
 
 def integerget(prompt, errStr):
+
+	# Repeat until a valid input is given
 	while True:
 		try:
+
+			# Take raw input and convert to int
 			i = int(input(prompt))
+
+			# Return if all's good
 			return i
+
+		# Except value error if raw is not base 10
 		except ValueError:
+
+			# Print error if given but NOT raise
 			if errStr != None:
 				print(errStr)
 
-def makefile(path, name, text, errStr):
+def makefile(path, name, errStr):
 	try:
+		
+		# Make parent folders if non existent
 		os.makedirs(path, exist_ok=True)
-		with open(f"{path}/{name}", "w") as file:
-			file.write(text)
+
+		file = open(f"{path}/{name}", "w")
+		return file
+
+	# Except errors that could occur
 	except IOError or OSError:
+		
+		# Print error string if given
 		if errStr != None:
 			print(errStr)
-		quit()
+		
+		# Then raise
+		raise
 
-def subprocess_easy(command, filename):
-	if filename != None:
-		file = open(filename, "w")
-		proc = subprocess.run(command,
-			stdout = file,
-			stderr = subprocess.STDOUT,
-			check = True,
-			text = True)
+def watchStdout(command, match, mode):
+
+	# First get a process object, then clean stdout
+	process = subprocessEz(command, None, None, None)
+	cleanStdout = process.stdout.rstrip("\n")
+	
+	# Check wich comparison "mode" to use
+	if mode == "all" and all(x in cleanStdout for x in match):
+
+		# Return true if stdout is equal to match
+		return True
+
+	elif mode == "any" and any(x in cleanStdout for x in match):
+
+		# Return true if math is contained in stdout
+		return True
+
+def subprocessEz(command, filespecs, succStr, errStr):
+
+	# Check if filespecs meets requirements
+	if filespecs == None or len(filespecs) != 2:
+
+		# Output will be redirected on subprocess.PIPE
+		redirect = subprocess.PIPE
+
 	else:
-		proc = subprocess.run(command,
-			stdout = subprocess.PIPE,
+		
+		# Output will be redirected on file
+		redirect = makefile(filespecs[0], filespecs[1], errStr)
+	
+	try:
+
+		# Call subprocess.run with requested command
+		process = subprocess.run(command,
+			stdout = redirect,
 			stderr = subprocess.STDOUT,
 			check = True,
 			text = True)
-	return proc
 
-def subprocess_try(command, file, succStr, errStr):
-	try:
-		proc = subprocess_easy(command, file)
+		# Print success if present
 		if succStr != None:
 			print(succStr)
-		return proc
+
+		# Always return process object
+		return process
+
+	# Except error if occurs
 	except subprocess.CalledProcessError:
+
+		# Print error if given
 		if errStr != None:
 			print(errStr)
-		quit()
-
-def subprocess_watch(command, match, mode):
-	proc = subprocess_try(command, None, None, None)
-	clean = proc.stdout.rstrip("\n")
-	
-	if mode == "all" and all(x in clean for x in match):
-		return True
-	elif mode == "any" and any(x in clean for x in match):
-		return True
-	
-	return False
+		
+		# Then raise
+		raise

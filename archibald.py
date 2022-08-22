@@ -26,7 +26,7 @@ def main(logname):
 	
 	# Try to find user defined driver name inside lspci output
 	print(f"{formats.execStr} Searching for any known graphics device...")
-	lspci = methods.subprocess_try("lspci", None, None, None)
+	lspci = methods.subprocessEz("lspci", None, None, None)
 	for device in configs.drivers:
 
 		# Repeat match for every user defined driver group
@@ -39,37 +39,39 @@ def main(logname):
 
 	# Packages installation via pacman subprocess
 	print(f"{formats.execStr} Please wait while PacMan installs packages...")
-	methods.subprocess_try(["pacman", "-S", "--needed", "--noconfirm"] + selection.pkgs,
-		"pacman.log", 
+	methods.subprocessEz(["pacman", "-S", "--needed", "--noconfirm"] + selection.pkgs,
+		["logs", "pacman.log"], 
 		f"{formats.succStr} Successfully installed all packages!", 
-		f"{formats.errStr} PacMan encountered errors, check pacman.log")
+		f"{formats.errStr} PacMan encountered errors, check logs")
 	
 	# Config files creation
 	print(f"{formats.execStr} Deploying configuration files...")
 	for i, f in enumerate(selection.files):
-		methods.makefile(f.path, f.name, f.text, f"{formats.errStr} Could not open {f.path}{f.name}.")
+		file = methods.makefile(f.path, f.name, f"{formats.errStr} Could not open {f.path}{f.name}.")
+		file.write(f.text)
 	
 	# Archibald runs with root privileges, so files in home will have rw protection
-	methods.subprocess_try(["chown", "-R", f"{logname}", f"/home/{logname}"], None, None, None)
+	methods.subprocessEz(["chown", "-R", f"{logname}", f"/home/{logname}"], None, None, None)
 
 	# Setting user groups one by one
 	print(f"{formats.execStr} Settings user groups...")
 	for i in selection.groups:
-		methods.subprocess_try(["usermod", "-aG", f"{logname}"] + i, None, None, None)
+		methods.subprocessEz(["usermod", "-aG", f"{logname}"] + i, None, None, None)
 
 	# Enabling systemd units all at one (systemctl supports multiple arguments)
 	print(f"{formats.execStr} Enabling systemd units...")
-	methods.subprocess_try(["systemctl", "enable"] + selection.units,
-		"systemctl.log", 
+	methods.subprocessEz(["systemctl", "enable"] + selection.units,
+		["logs", "systemctl.log"], 
 		f"{formats.succStr} Successfully enabled systemd units!", 
-		f"{formats.errStr} Systemctl encountered errors, check systemctl.log")
+		f"{formats.errStr} Systemctl encountered errors, check logs")
 	
 	# Check if profile demands a chsh
 	if selection.shell != None:
 
 		# Try changing user shell
 		print(f"{formats.execStr} Changing user shell to {selection.shell}...")
-		methods.subprocess_try(["chsh", "-s", f"{selection.shell}", f"{logname}"], None, None, 
+		methods.subprocessEz(["chsh", "-s", f"{selection.shell}", f"{logname}"],
+			["logs", "chsh.log"], None, 
 			f"{formats.errStr} Error changing user shell to {selection.shell}.")
 	
 	# Conclusion
@@ -83,15 +85,15 @@ def main(logname):
 
 
 
-if not methods.subprocess_watch("whoami", "root", "all"):
+if not methods.watchStdout("whoami", "root", "all"):
 	# Exit if not executing with sudo
 	print(f"{formats.errStr} Archibald needs {formats.uline}high{formats.endc} privileges.")
-elif not methods.subprocess_watch(["cat", "/etc/os-release"], "Arch Linux", "any"):
+elif not methods.watchStdout(["cat", "/etc/os-release"], "Arch Linux", "any"):
 	# Exit if system is not Arch Linux (pacman is used)
 	print(f"{formats.errStr} This is not Arch Linux.")
 else:
 	# Use method to get clean output of logname command
-	logname = methods.subprocess_try("logname", None, None, None).stdout.rstrip("\n")
+	logname = methods.subprocessEz("logname", None, None, None).stdout.rstrip("\n")
 	
 	if logname == "root":
 		# Exit if logged in as the root use (/home/root does not exist)
