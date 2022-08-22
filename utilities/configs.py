@@ -28,7 +28,22 @@ pkgroups = {
     "DesktopCommons": ["xdg-user-dirs", "xdg-desktop-portal", "libqtxdg", "flatpak", "ttf-liberation", "ttf-droid", "noto-fonts-emoji"]
 }
 
-#User defined profiles
+#   User defined profiles
+
+#   classes.profile(
+#       name = "Example",                                   # Profile name                    | Mandatory
+#       type = "Example",                                   # Target system to be prompt      | Mandatory
+#       pkgs = pkgroups["example"] + pkgroups ["example2"], # One or sum of multiple pkgroups | = [] for none
+#       units = ["test", "example"],                        # List of systemd units to enable | = [] for none
+#       grops = ["wheel", "example"],                       # List of user groups             | = [] for none
+#       shell = "/bin/exampleshell",                        # Custom shell binary             | = None for none
+#       files = [                                           # Profile only config files       | = [] for none
+#           classes.file(
+#               name = "ExampleConfig",                     # File name | Mandatory
+#               path = "example/path",                      # File path | Mandatory
+#               text = "sometextto\nbe\nwritten"),          # Text      | Mandatory
+#           classes.file( .... )])
+
 profiles = [
     classes.profile(
         name = "Gnome",
