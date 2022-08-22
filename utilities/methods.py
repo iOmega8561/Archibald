@@ -1,8 +1,11 @@
 import subprocess, os
 
-def logname():
-	proc = subprocessEz("logname", None, None, None)
-	return proc.stdout.rstrip("\n")
+def justLogname():
+
+	process = subprocess.run("logname",
+			stdout = subprocess.PIPE,
+			text = True)
+	return process.stdout.rstrip("\n")
 
 def integerget(prompt, errStr):
 

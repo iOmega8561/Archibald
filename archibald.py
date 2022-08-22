@@ -93,7 +93,7 @@ elif not methods.watchStdout(["cat", "/etc/os-release"], "Arch Linux", "any"):
 	print(f"{formats.errStr} This is not Arch Linux.")
 else:
 	# Use method to get clean output of logname command
-	logname = methods.subprocessEz("logname", None, None, None).stdout.rstrip("\n")
+	logname = methods.justLogname()
 	
 	if logname == "root":
 		# Exit if logged in as the root use (/home/root does not exist)
