@@ -34,7 +34,7 @@ profiles = [
         name = "Gnome",
         type = "Desktop",
         pkgs = pkgroups["Basics"] + pkgroups["DisplayServer"] + pkgroups["PipeWire"] + pkgroups["GnomeMinimal"] + pkgroups["DesktopCommons"],
-        units = ["gdm"],
+        units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "gdm"],
         groups = [],
         shell = "/bin/zsh"),
 
@@ -42,7 +42,7 @@ profiles = [
         name = "Plasma",
         type = "Desktop",
         pkgs = pkgroups["Basics"] + pkgroups["DisplayServer"] + pkgroups["PipeWire"] + pkgroups["PlasmaMinimal"] + pkgroups["DesktopCommons"],
-        units = ["sddm"],
+        units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "sddm"],
         groups = [],
         shell = "/bin/zsh"),
 
@@ -50,7 +50,7 @@ profiles = [
         name = "Cockpit",
         type = "Server",
         pkgs = pkgroups["Basics"] + pkgroups["CockpitHeadless"],
-        units = ["sshd", "libvirtd", "cockpit.socket", "docker"],
+        units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "sshd", "libvirtd", "cockpit.socket", "docker"],
         groups = ["qemu", "libvirt", "docker"],
         shell = "/bin/zsh")
 ]
