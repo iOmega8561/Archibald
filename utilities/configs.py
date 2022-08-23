@@ -4,7 +4,7 @@ from utilities.methods import justLogname
 # Need to know username to find $home
 logname = justLogname()
 
-# User defined driver sets
+# Don't edit if you don't know what you're doing
 drivers = {
     "QXL paravirtual graphic card": ["xf86-video-qxl"],
     "NVIDIA Corporation": ["dkms", "nvidia-dkms", "nvidia-prime"],
@@ -16,7 +16,7 @@ drivers = {
 pkgroups = {
     "Basics": ["acpi", "acpid", "acpi_call", "base-devel", "zsh", "zsh-completions", "net-tools", "gnu-netcat", "openssh", "git", "nano", "networkmanager", "bluez", "bluez-utils", "cronie", "htop", "ffmpeg", "polkit", "cups", "cups-pdf", "splix"],
 
-    "DisplayServer": ["mesa", "mesa-utils", "wayland", "libinput", "xorg-server", "xorg-xinit"],
+    "DisplayServer": ["mesa", "mesa-utils", "wayland", "libinput", "libwacom", "xorg-server", "xorg-xinit"],
 
     "PipeWire": ["pipewire", "pipewire-alsa", "pipewire-jack", "pipewire-pulse", "gst-plugin-pipewire", "libpulse", "wireplumber"],
 
@@ -60,7 +60,7 @@ profiles = [
 ]
 
 # Global configuration files
-globalfiles = [
+globalconf = [
 	classes.file(
         name = ".zshrc",
 	    path = f"/home/{logname}",
@@ -79,4 +79,4 @@ globalfiles = [
 
 # Global configs will be added to profiles at runtime
 for i, p in enumerate(profiles):
-    p.files += globalfiles
+    p.files += globalconf

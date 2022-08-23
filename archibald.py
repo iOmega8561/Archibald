@@ -78,24 +78,24 @@ def main(logname):
 	print(f"{formats.succStr} Archibald has finished, please reboot!")
 
 
-
-
-
-
-
-
-
+# First checks to ensure everything's good
 if not methods.watchStdout("whoami", "root", "all"):
+
 	# Exit if not executing with sudo
 	print(f"{formats.errStr} Archibald needs {formats.uline}high{formats.endc} privileges.")
+
 elif not methods.watchStdout(["cat", "/etc/os-release"], "Arch Linux", "any"):
-	# Exit if system is not Arch Linux (pacman is used)
+
+	# Exit if system is not Arch Linux (pacman is necessary)
 	print(f"{formats.errStr} This is not Arch Linux.")
+
 else:
+
 	# Use method to get clean output of logname command
 	logname = methods.justLogname()
 	
 	if logname == "root":
+
 		# Exit if logged in as the root use (/home/root does not exist)
 		print(f"{formats.errStr} Executing logged as root is not supported.")
 		quit()
