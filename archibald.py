@@ -5,7 +5,7 @@ import utilities.formats as formats
 
 def main(logname):
 	# Prepare greeting text
-	prompt = f"{formats.msgStr} Archibald utility for Arch Linux, select a profile:\n"
+	prompt = f"{formats.msgStr} Please select one the following profiles:\n"
 	
 	# Format-add every profile name and target to greetings
 	for i, p in enumerate(configs.profiles):
@@ -13,12 +13,16 @@ def main(logname):
 	prompt += f"{formats.bold}User input:{formats.endc} "
 
 	# Print prompt text and get user imput, must be integer
-	index = methods.integerget(prompt, f"{formats.execStr} Input not a number, retry.") - 1
-	while index < 0 or index >= len(configs.profiles):
-
-		# Repeat input until a valid one is given
-		print(f"{formats.execStr} Not in range, try again.")
+	try:
 		index = methods.integerget(prompt, f"{formats.execStr} Input not a number, retry.") - 1
+		while index < 0 or index >= len(configs.profiles):
+
+			# Repeat input until a valid one is given
+			print(f"{formats.execStr} Not in range, try again.")
+			index = methods.integerget(prompt, f"{formats.execStr} Input not a number, retry.") - 1
+	except KeyboardInterrupt:
+		print(f"\n{formats.warnStr} Detected keyboard interrupt, Archibald will terminate")
+		quit()
 
 	# When success, save chosen profile inside selection and prompt user his choice again
 	selection = configs.profiles[index]
@@ -99,6 +103,7 @@ else:
 		# Exit if logged in as the root use (/home/root does not exist)
 		print(f"{formats.errStr} Executing logged as root is not supported.")
 		quit()
-
+	
+	print(f"{formats.msgStr} Welcome to Archibald, your Arch configuration helper.")
 	# Run main logic
 	main(logname)
