@@ -60,14 +60,16 @@ def main(logname):
 	# Setting user groups one by one
 	print(f"{formats.execStr} Settings user groups...")
 	for i in selection.groups:
-		methods.subprocessEz(command = ["usermod", "-aG", f"{logname}"] + i)
+		methods.subprocessEz(command = ["usermod", "-aG", f"{i}", f"{logname}"])
 
-	# Enabling systemd units all at one (systemctl supports multiple arguments)
-	print(f"{formats.execStr} Enabling systemd units...")
-	methods.subprocessEz(command = ["systemctl", "enable"] + selection.units,
-		filespecs = ["logs", "systemctl.log"], 
-		succStr = f"{formats.succStr} Successfully enabled systemd units!", 
-		errStr = f"{formats.errStr} Systemctl encountered errors, check logs")
+	# Check if profile demands systemd enable
+	if selection.units != []:
+
+		# Try enable all at once
+		print(f"{formats.execStr} Enabling systemd units...")
+		methods.subprocessEz(command = ["systemctl", "enable"] + selection.units,
+			filespecs = ["logs", "systemctl.log"],
+			errStr = f"{formats.errStr} Systemctl encountered errors, check logs")
 	
 	# Check if profile demands a chsh
 	if selection.shell != None:
