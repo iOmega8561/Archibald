@@ -36,18 +36,14 @@ profiles = [
         type = "Desktop",
         pkgs = pkgroups["Basics"] + pkgroups["DisplayServer"] + pkgroups["PipeWire"] + pkgroups["GnomeMinimal"] + pkgroups["DesktopCommons"],
         units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "gdm"],
-        groups = [],
-        shell = "/bin/zsh",
-        files = []),
+        shell = "/bin/zsh"),
 
     classes.profile(
         name = "Plasma",
         type = "Desktop",
         pkgs = pkgroups["Basics"] + pkgroups["DisplayServer"] + pkgroups["PipeWire"] + pkgroups["PlasmaMinimal"] + pkgroups["DesktopCommons"],
         units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "sddm"],
-        groups = [],
-        shell = "/bin/zsh",
-        files = []),
+        shell = "/bin/zsh"),
 
     classes.profile(
         name = "Cockpit",
@@ -55,8 +51,7 @@ profiles = [
         pkgs = pkgroups["Basics"] + pkgroups["CockpitHeadless"],
         units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "sshd", "libvirtd", "cockpit.socket", "docker"],
         groups = ["qemu", "libvirt", "docker"],
-        shell = "/bin/zsh",
-        files = [])
+        shell = "/bin/zsh")
 ]
 
 # Global configuration files

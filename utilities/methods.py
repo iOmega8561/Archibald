@@ -7,7 +7,7 @@ def justLogname():
 			text = True)
 	return process.stdout.rstrip("\n")
 
-def integerget(prompt, errStr):
+def integerget(prompt: str, errStr: str = None):
 
 	# Repeat until a valid input is given
 	while True:
@@ -26,7 +26,7 @@ def integerget(prompt, errStr):
 			if errStr != None:
 				print(errStr)
 
-def makefile(path, name, errStr):
+def makefile(path: str, name: str, errStr: str = None):
 	try:
 		
 		# Make parent folders if non existent
@@ -45,24 +45,24 @@ def makefile(path, name, errStr):
 		# Then raise
 		raise
 
-def watchStdout(command, match, mode):
+def watchStdout(command: list, match: list, mode: int):
 
 	# First get a process object, then clean stdout
-	process = subprocessEz(command, None, None, None)
+	process = subprocessEz(command)
 	cleanStdout = process.stdout.rstrip("\n")
 	
 	# Check wich comparison "mode" to use
-	if mode == "all" and all(x in cleanStdout for x in match):
+	if mode == 0 and all(x in cleanStdout for x in match):
 
 		# Return true if stdout is equal to match
 		return True
 
-	elif mode == "any" and any(x in cleanStdout for x in match):
+	elif mode == 1 and any(x in cleanStdout for x in match):
 
 		# Return true if math is contained in stdout
 		return True
 
-def subprocessEz(command, filespecs, succStr, errStr):
+def subprocessEz(command: list, filespecs: list = None, cwd: str = None, succStr: str = None, errStr: str = None):
 
 	# Check if filespecs meets requirements
 	if filespecs == None or len(filespecs) != 2:
@@ -75,12 +75,19 @@ def subprocessEz(command, filespecs, succStr, errStr):
 		# Output will be redirected on file
 		redirect = makefile(filespecs[0], filespecs[1], errStr)
 	
+	# Check if Working Dir has been passed
+	if cwd == None:
+
+		# If not, use current dir
+		cwd = os.getcwd()
+
 	try:
 
 		# Call subprocess.run with requested command
 		process = subprocess.run(command,
 			stdout = redirect,
 			stderr = subprocess.STDOUT,
+			cwd = cwd,
 			check = True,
 			text = True)
 
