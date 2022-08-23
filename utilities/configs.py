@@ -38,7 +38,6 @@ profiles = [
         units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "gdm"],
         groups = [],
         shell = "/bin/zsh",
-        aur = True,
         files = []),
 
     classes.profile(
@@ -48,7 +47,6 @@ profiles = [
         units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "sddm"],
         groups = [],
         shell = "/bin/zsh",
-        aur = True,
         files = []),
 
     classes.profile(
@@ -58,7 +56,6 @@ profiles = [
         units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "sshd", "libvirtd", "cockpit.socket", "docker"],
         groups = ["qemu", "libvirt", "docker"],
         shell = "/bin/zsh",
-        aur = True,
         files = [])
 ]
 
