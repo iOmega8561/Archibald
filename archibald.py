@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-import utilities.configs as configs
 import utilities.methods as methods
 import utilities.formats as formats
+import config.defaults as configs
 
 def main(logname):
 	# Prepare greeting text
@@ -28,42 +28,49 @@ def main(logname):
 	selection = configs.profiles[index]
 	print(f"{formats.msgStr} Selected profile is {selection.name} ({selection.type})")
 	
-	# Try to find user defined driver name inside lspci output
-	print(f"{formats.execStr} Searching for any known graphics device...")
-	lspci = methods.subprocessEz(command = ["lspci"])
-	for device in configs.drivers:
+	# Check if profile demands video drivers
+	if selection.drivers != False:
 
-		# Repeat match for every user defined driver group
-		match = [f"VGA compatible controller: {device}", f"Display controller: {device}"]
-		if any(x in lspci.stdout.rstrip("\n") for x in match):
+		# Try to find known graphics cards from lspci
+		print(f"{formats.execStr} Searching for any known graphics device...")
+		lspci = methods.subprocessEz(command = ["lspci"])
+		for device in configs.dicts.drivers:
 
-			# If is found, add packages to profile.pkgs
-			print(f"{formats.succStr} Found {device} device!")
-			selection.pkgs += configs.drivers[device]
+			# Repeat match for every user defined driver group
+			match = [f"VGA compatible controller: {device}", f"Display controller: {device}"]
+			if any(x in lspci.stdout.rstrip("\n") for x in match):
 
-	# Packages installation via pacman subprocess
+				# If is found, add packages to profile.pkgs
+				print(f"{formats.succStr} Found {device} device!")
+				selection.pkgs += configs.dicts.drivers[device]
+
+	# PacMan call, if pkgs = [] just update database
 	print(f"{formats.execStr} Please wait while PacMan installs packages...")
-	methods.subprocessEz(command = ["pacman", "-S", "--needed", "--noconfirm"] + selection.pkgs,
+	methods.subprocessEz(command = ["pacman", "-Sy", "--needed", "--noconfirm"] + selection.pkgs,
 		filespecs = ["logs", "pacman.log"], 
 		succStr = f"{formats.succStr} Successfully installed all packages!", 
 		errStr = f"{formats.errStr} PacMan encountered errors, check logs")
-	
-	# Config files creation
-	print(f"{formats.execStr} Deploying configuration files...")
-	for i, f in enumerate(selection.files):
-		file = methods.makefile(f.path, f.name, f"{formats.errStr} Could not open {f.path}{f.name}.")
-		file.write(f.text)
-	
-	# Archibald runs with root privileges, so files in home will have rw protection
-	methods.subprocessEz(command = ["chown", "-R", f"{logname}", f"/home/{logname}"])
 
-	# Setting user groups one by one
-	print(f"{formats.execStr} Settings user groups...")
-	for i in selection.groups:
-		methods.subprocessEz(command = ["usermod", "-aG", f"{i}", f"{logname}"])
+	if selection.files != None:
+
+		# Config files creation
+		print(f"{formats.execStr} Deploying configuration files...")
+		for i, f in enumerate(selection.files):
+			file = methods.makefile(f.path, f.name, f"{formats.errStr} Could not open {f.path}{f.name}.")
+			file.write(f.text)
+	
+		# Archibald runs as root, home located files will be owned by root, let's fix that
+		methods.subprocessEz(command = ["chown", "-R", logname, f"/home/{logname}"])
+
+	if selection.groups != None:
+
+		# Setting user groups one by one
+		print(f"{formats.execStr} Settings user groups...")
+		for i in selection.groups:
+			methods.subprocessEz(command = ["usermod", "-aG", i, logname])
 
 	# Check if profile demands systemd enable
-	if selection.units != []:
+	if selection.units != None:
 
 		# Try enable all at once
 		print(f"{formats.execStr} Enabling systemd units...")
@@ -76,9 +83,35 @@ def main(logname):
 
 		# Try changing user shell
 		print(f"{formats.execStr} Changing user shell to {selection.shell}...")
-		methods.subprocessEz(command = ["chsh", "-s", f"{selection.shell}", f"{logname}"],
+		methods.subprocessEz(command = ["chsh", "-s", selection.shell, logname],
 			filespecs = ["logs", "chsh.log"], 
 			errStr = f"{formats.errStr} Error changing user shell to {selection.shell}.")
+	
+	# Prompt user to let Archibald install paru
+	print(f"{formats.msgStr} Would you like Archibald to enable AUR? (Yes/No)")
+	enableaur = input(f"{formats.bold}User input:{formats.endc} ")
+	if any(x in enableaur for x in ["Y", "y", "Yes", "yes"]):
+
+		# Try to remove pre-existent trash
+		methods.subprocessEz(command = ["rm", "-fr", "paru"], cwd = f"/home/{logname}")
+
+		# Try git clone paru repository
+		print(f"{formats.execStr} Performing git clone https://aur.archlinux.org/paru as {logname}...")
+		methods.subprocessEz(command = ["git", "clone", "https://aur.archlinux.org/paru"],
+			user = logname,
+			cwd = f"/home/{logname}",
+			errStr = f"{formats.errStr} Git encountered an unexpected error.")
+
+		# Try to install dependencies, compile and install paru
+		print(f"{formats.execStr} Performing makepkg -si as {logname}, expect sudo prompts...")
+		methods.subprocessEz(command = ["makepkg", "-si", "--noconfirm", "--needed"],
+			user = logname,
+			filespecs = ["logs", "makepkg.log"],
+			cwd = f"/home/{logname}/paru",
+			errStr = f"{formats.errStr} Could not install paru, check logs.")
+		
+		# Try to remove leftover trash
+		methods.subprocessEz(command = ["rm", "-fr", "paru"], cwd = f"/home/{logname}")
 
 	# Conclusion
 	print(f"{formats.succStr} Archibald has finished, please reboot!")

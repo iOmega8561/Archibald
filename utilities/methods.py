@@ -62,7 +62,13 @@ def watchStdout(command: list, match: list, mode: int):
 		# Return true if math is contained in stdout
 		return True
 
-def subprocessEz(command: list, filespecs: list = None, cwd: str = None, succStr: str = None, errStr: str = None):
+def subprocessEz(command: list, user: str = None, filespecs: list = None, cwd: str = None, succStr: str = None, errStr: str = None):
+
+	# Check if user has been passed
+	if user != None:
+
+		# If yes, then add runuser first to cmd
+		command = ["runuser", "-u", user, "--"] + command
 
 	# Check if filespecs meets requirements
 	if filespecs == None or len(filespecs) != 2:
