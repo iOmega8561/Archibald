@@ -4,14 +4,15 @@ This is a personal project, started for fun and personal purposes only. You DO t
 
 ## What's this?
 Archibald is a configurable python utility that allows to recreate Arch Linux setups real fast. Archibald can:
-- Prompt the user a selection between profiles
-- Detect QXL/Nvidia/Amd/Intel graphics cards
-- Install packages via PacMan
-- Enable systemd units
-- Add user to certain groups
-- Create configuration files such as .zshrc or htoprc
-- Change the user shell
-- Install paru, the AUR helper
+- Prompt the user a selection between profiles;
+- Detect QXL/Nvidia/Amd/Intel graphics cards;
+- Install packages via PacMan;
+- Enable systemd units;
+- Add user to certain groups;
+- Create configuration files such as .zshrc or htoprc;
+- Change the user shell;
+- Install paru, the AUR helper.
+
 It is best to run Archibald on a fresh Arch Linux manual installation, but minimal archinstall setups are ok too.
 
 ## How to use
