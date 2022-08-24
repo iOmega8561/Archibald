@@ -2,7 +2,7 @@
 
 drivers = {
 
-    "RedHat, Inc. QXL paravirtual graphic card": ["xf86-video-qxl"],
+    "Red Hat, Inc. QXL paravirtual graphic card": ["xf86-video-qxl"],
     
     "NVIDIA Corporation": ["dkms", "nvidia-dkms", "nvidia-prime"],
     
