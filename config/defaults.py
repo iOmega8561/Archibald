@@ -1,6 +1,5 @@
-import config.dicts as dicts
-import utilities.classes as classes
-
+from config import dicts
+from utilities import classes
 from utilities.methods import justLogname
 
 # Need to know username to find $home
@@ -12,7 +11,7 @@ profiles = [
         name    = "Gnome",
         type    = "Desktop",
         drivers = True,
-        pkgs    = dicts.pkgs["Basics"] + dicts.pkgs["Xorg"] + dicts.pkgs["Audio"] + dicts.pkgs["Gnome"] + dicts.pkgs["Flatpak"],
+        pkgs    = dicts.pkgs["Basics"] + dicts.pkgs["Xorg"] + dicts.pkgs["Audio"] + dicts.pkgs["Gnome"],
         units   = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "gdm"],
         shell   = "/bin/zsh",
 
@@ -26,7 +25,7 @@ profiles = [
         name    = "Plasma",
         type    = "Desktop",
         drivers = True,
-        pkgs    = dicts.pkgs["Basics"] + dicts.pkgs["Xorg"] + dicts.pkgs["Audio"] + dicts.pkgs["Plasma"] + dicts.pkgs["Flatpak"],
+        pkgs    = dicts.pkgs["Basics"] + dicts.pkgs["Xorg"] + dicts.pkgs["Audio"] + dicts.pkgs["Plasma"],
         units   = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "sddm"],
         shell   = "/bin/zsh",
 

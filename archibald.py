@@ -127,11 +127,13 @@ def main():
 
 		# Exit if not executing with sudo
 		print(f"{formats.errStr} Archibald needs {formats.uline}high{formats.endc} privileges.")
+		exit(1)
 
 	elif not methods.watchStdout(["cat", "/etc/os-release"], "Arch Linux", 1):
 
 		# Exit if system is not Arch Linux (pacman is necessary)
 		print(f"{formats.errStr} This is not Arch Linux.")
+		exit(1)
 
 	# Use method to get clean output of logname command
 	logname = methods.justLogname()
@@ -140,7 +142,7 @@ def main():
 
 		# Exit if logged in as the root use (/home/root does not exist)
 		print(f"{formats.errStr} Executing logged as root is not supported.")
-		quit()
+		exit(1)
 	
 	print(f"{formats.msgStr} Welcome to Archibald, your Arch configuration helper.")
 
@@ -173,7 +175,7 @@ def main():
 
 		# Just quit if interrupted
 		print(f"\n{formats.warnStr} Detected keyboard interrupt, Archibald will terminate")
-		quit()
+		exit(1)
 
 if __name__ == "__main__":
 	main()
