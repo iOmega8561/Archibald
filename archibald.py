@@ -61,9 +61,6 @@ def processAskAur(logname: str):
 
 def processProfile(selection: classes.profile , logname: str):
 
-	# Prompt user his choice again
-	print(f"{formats.msgStr} Selected profile is {selection.name} ({selection.type})")
-	
 	# Check if profile demands video drivers
 	if selection.drivers != False:
 
