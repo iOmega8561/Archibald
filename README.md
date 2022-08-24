@@ -19,7 +19,6 @@ It is best to run Archibald on a fresh Arch Linux manual installation, but minim
 ## How to use
 Archibald includes a default configuration, so you can simply ```git clone``` this repo and run
 ```
-git clone "$this_repo_here"
 cd Archibald
 chmod +x archibald.py
 sudo ./archibald.py
@@ -39,7 +38,7 @@ ExampleProfile = classes.profile(
     name    = "Example",                            # Profile name                    | str, MANDATORY
     type    = "Example",                            # Target system to be prompt      | str, MANDATORY
     drivers = True,                                 # Install graphics drivers        | bool, can omit, default False
-    pkgs    = dicts.pkgs["Ex"] + dicts.pkgs["Ex2"], # One or sum of multiple pkgroups | list, can omit, default []
+    pkgs    = dicts.pkgs["Ex"] + .. OR pkgs = ["pkg1", "pkg2" ...]                    | list, can omit, default []
     units   = ["test", "example"],                  # List of systemd units to enable | list, can omit, default None
     grops   = ["wheel", "example"],                 # List of user groups             | list, can omit, default None
     shell   = "/bin/exampleshell",                  # Custom shell binary             | str, can omit, default None

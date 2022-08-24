@@ -22,9 +22,9 @@ pkgs = {
 
     "Cockpit": ["screen", "cockpit", "udisks2", "cockpit-storaged", "qemu-base", "libvirt", "virt-install", "dnsmasq", "cockpit-machines", "docker"],
 
-    "Gnome": ["gnome-shell", "gdm", "nautilus", "gnome-keyring", "gnome-terminal", "gnome-tweaks", "gnome-bluetooth-3.0", "gnome-control-center", "gnome-backgrounds", "gnome-themes-extra", "gnome-software", "eog", "gnome-calculator", "gedit", "evince", "xdg-desktop-portal-gnome", "xdg-utils"],
+    "Gnome": ["gnome-shell", "gdm", "nautilus", "gnome-keyring", "gnome-terminal", "gnome-tweaks", "gnome-bluetooth-3.0", "power-profiles-daemon","gnome-control-center", "gnome-backgrounds", "gnome-themes-extra", "gnome-software", "eog", "gnome-calculator", "gedit", "evince", "xdg-desktop-portal-gnome", "xdg-utils"],
 
-    "Plasma": ["plasma-desktop", "sddm", "plasma-wayland-session", "dolphin", "systemsettings", "kscreen", "breeze-gtk", "kwallet", "konsole", "bluedevil", "powerdevil", "plasma-nm", "plasma-workspace-wallpapers", "discover", "ark", "kwrite", "kcalc", "spectacle", "krunner", "plasma-disks", "partitionmanager", "packagekit-qt5", "okular", "xdg-desktop-portal-kde"],
+    "Plasma": ["plasma-desktop", "sddm", "plasma-wayland-session", "dolphin", "systemsettings", "kscreen", "breeze-gtk", "kwallet", "konsole", "bluedevil", "power-profiles-daemon", "powerdevil", "plasma-nm", "plasma-workspace-wallpapers", "discover", "ark", "kwrite", "kcalc", "spectacle", "krunner", "plasma-disks", "partitionmanager", "packagekit-qt5", "okular", "xdg-desktop-portal-kde"],
 
     "Flatpak": ["xdg-user-dirs", "xdg-desktop-portal", "libqtxdg", "flatpak", "ttf-liberation", "ttf-droid", "noto-fonts-emoji"]
 
