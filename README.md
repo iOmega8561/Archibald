@@ -12,6 +12,7 @@ Archibald is a configurable python utility that allows to recreate Arch Linux se
 - Create configuration files such as .zshrc or htoprc
 - Change the user shell
 - Install paru, the AUR helper
+It is best to run Archibald on a fresh Arch Linux manual installation, but minimal archinstall setups are ok too.
 
 ## How to use
 Archibald includes a default configuration, so you can simply run
