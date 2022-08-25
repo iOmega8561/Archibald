@@ -1,8 +1,6 @@
 # Don't edit if you don't know what you're doing
 
 drivers = {
-
-    "Red Hat, Inc. QXL paravirtual graphic card": ["xf86-video-qxl"],
     
     "NVIDIA Corporation": ["dkms", "nvidia-dkms", "nvidia-prime"],
     
