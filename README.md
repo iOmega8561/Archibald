@@ -26,15 +26,24 @@ sudo ./archibald.py
 Configuration is found under Archibald/config/. More on it down below.
 
 ## Configuration
-Once you get to edit Archibald's configuration, you'll see that it's pretty self explanatory, it comprehends:
-- Dictionaries file, defines default package groups and driver sets. It also includes contents of default config files that can be deployed on the user's system (for example a standard logind.conf). It is best to not directly edit this file, since it's content is needed for Archibald and it's basic configuration to work.
-- Defaults file, which contains profile objects, that will be parsed by Archibald to determine what to do. Here is an example profile:
+Once you get to edit Archibald's configuration, you'll see that it's pretty self explanatory.
+- packages.py defines (literally) groups of packages. One or more package groups can be used in a configured profile, using just python's algebraic syntax (pkgs = grp1 + grp2 + ... ).
+- files.py contains objects wich represent a configuration file that could be included into a profile. Archibald will create files for the selected profile object.
+- profiles.py contains a list. An object of that list is a profile, and here is an example:
 ```
 # User defined profiles
 # Read carefully any bad config could be catastrofic
 # The order of profile childs is not relevant
 
-ExampleProfile = classes.profile(
+import profile # data structure class
+import file    # data structure class
+
+ExampleFile = file(                                                       
+            name = "ExampleConfig",                 # File name                          | str, Mandatory
+            path = "example/path",                  # File path                          | str, Mandatory
+            text = "sometextto\nbe\nwritten"),      # Text                               | str, Mandatory
+
+ExampleProfile = profile(
     name    = "Example",                            # Profile name                    | str, MANDATORY
     type    = "Example",                            # Target system to be prompt      | str, MANDATORY
     drivers = True,                                 # Install graphics drivers        | bool, can omit, default False
@@ -43,10 +52,8 @@ ExampleProfile = classes.profile(
     grops   = ["wheel", "example"],                 # List of user groups             | list, can omit, default None
     shell   = "/bin/exampleshell",                  # Custom shell binary             | str, can omit, default None
     files   = [                                     # Profile only config files       | list, can omit, default None
-        classes.file(                                                       BELOW ONLY IF FILES ARE PRESENT
-            name = "ExampleConfig",              # File name                       | str, Mandatory
-            path = "example/path",               # File path                       | str, Mandatory
-            text = "sometextto\nbe\nwritten"),   # Text                            | str, Mandatory
-        classes.file( .... )])
+        ExampleFile,
+        Exaple2,
+        ...
+    ]
 ```
-As you can see profiles can also have as a child a list of file objects. This serves the purpose of letting Archibald create configuration files system wide for you. Since sudo is required, Archibald will run a chown on current user's homedir, to set newly created files and directories' ownership to you instead of root user.

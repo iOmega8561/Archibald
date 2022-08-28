@@ -1,5 +1,5 @@
-from config import packages, files
-from common.datastores import profile
+from userconf import packages, files
+from common.structures import profile
 
 # Check readme to edit these
 list = [
@@ -34,7 +34,7 @@ list = [
 
     profile(
         name    = "Cockpit",
-        type    = "Server",
+        type    = "Headless",
         pkgs    = packages.basics + packages.cockpit,
         units   = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "sshd", "libvirtd", "cockpit.socket", "docker"],
         groups  = ["qemu", "libvirt", "docker"],

@@ -1,6 +1,22 @@
 import subprocess, os
 
-def integerget(prompt: str, errStr: str = None):
+def log(text: str, type: str = "msg"):
+
+	types = {
+		"msg": "\033[1mMessage:\033[0m {text}",
+		"err": "\033[91mError:\033[0m {text}",
+		"wrn": "\033[91mWarning:\033[0m {text}",
+		"exc": "\033[93mExecuting:\033[0m {text}",
+		"suc": "\033[92mSuccess:\033[0m {text}",
+		"nof": "{text}"
+	}
+
+	if type in types:
+		print(types[type].format(text = text))
+	else:
+		log("Invalid log type.", "err")
+
+def integerget(prompt: str, wrnmsg: str = None):
 
 	# Repeat until a valid input is given
 	while True:
@@ -16,10 +32,10 @@ def integerget(prompt: str, errStr: str = None):
 		except ValueError:
 
 			# Print error if given but NOT raise
-			if errStr != None:
-				print(errStr)
+			if wrnmsg != None:
+				log(wrnmsg, "wrn")
 
-def makefile(path: str, name: str, errStr: str = None):
+def makefile(name: str, path: str, errmsg: str = None):
 	try:
 		
 		# Make parent folders if non existent
@@ -32,22 +48,18 @@ def makefile(path: str, name: str, errStr: str = None):
 	except IOError or OSError:
 		
 		# Print error string if given
-		if errStr != None:
-			print(errStr)
+		if errmsg != None:
+			log(errmsg, "err")
 		
 		# Then raise
 		raise
 
-def subprocessEz(command: list, user: str = None, filespecs: list = None, cwd: str = None, succStr: str = None, errStr: str = None):
+def subprocessEz(command: list, user: str = None, logfile: bool = False, cwd: str = None, succmsg: str = None, errmsg: str = None):
 
-	# Check if user has been passed
-	if user != None:
+	log(" ".join(map(str, command[0:4])), "exc")
 
-		# If yes, then add runuser first to cmd
-		command = ["runuser", "-u", user, "--"] + command
-
-	# Check if filespecs meets requirements
-	if filespecs == None or len(filespecs) != 2:
+	# Check if logfile is required
+	if logfile == False:
 
 		# Output will be redirected on subprocess.PIPE
 		redirect = subprocess.PIPE
@@ -55,8 +67,14 @@ def subprocessEz(command: list, user: str = None, filespecs: list = None, cwd: s
 	else:
 		
 		# Output will be redirected on file
-		redirect = makefile(filespecs[0], filespecs[1], errStr)
+		redirect = makefile(f"{command[0]}.log", "logs", errmsg)
 	
+	# Check if user has been passed
+	if user != None:
+
+		# If yes, then add runuser first to cmd
+		command = ["runuser", "-u", user, "--"] + command
+
 	# Check if Working Dir has been passed
 	if cwd == None:
 
@@ -74,8 +92,8 @@ def subprocessEz(command: list, user: str = None, filespecs: list = None, cwd: s
 			text = True)
 
 		# Print success if present
-		if succStr != None:
-			print(succStr)
+		if succmsg != None:
+			log(succmsg, "suc")
 
 		# Always return process object
 		return process
@@ -84,8 +102,8 @@ def subprocessEz(command: list, user: str = None, filespecs: list = None, cwd: s
 	except subprocess.CalledProcessError:
 
 		# Print error if given
-		if errStr != None:
-			print(errStr)
+		if errmsg != None:
+			log(errmsg, "err")
 		
 		# Then raise
 		raise
@@ -93,7 +111,7 @@ def subprocessEz(command: list, user: str = None, filespecs: list = None, cwd: s
 	except FileNotFoundError:
 
 		# File not found error
-		print("subprocessEz: EXECUTABLE NOT FOUND.")
+		log("Executable not found.", "err")
 
 		# Then raise
 		raise
