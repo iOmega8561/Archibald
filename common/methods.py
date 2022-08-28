@@ -1,13 +1,5 @@
 import subprocess, os
 
-def logname():
-
-	process = subprocess.run("logname",
-			stdout = subprocess.PIPE,
-			text = True)
-			
-	return process.stdout.rstrip("\n")
-
 def integerget(prompt: str, errStr: str = None):
 
 	# Repeat until a valid input is given
@@ -45,23 +37,6 @@ def makefile(path: str, name: str, errStr: str = None):
 		
 		# Then raise
 		raise
-
-def watchStdout(command: list, match: list, mode: int):
-
-	# First get a process object, then clean stdout
-	process = subprocessEz(command)
-	cleanStdout = process.stdout.rstrip("\n")
-	
-	# Check wich comparison "mode" to use
-	if mode == 0 and all(x in cleanStdout for x in match):
-
-		# Return true if stdout is equal to match
-		return True
-
-	elif mode == 1 and any(x in cleanStdout for x in match):
-
-		# Return true if math is contained in stdout
-		return True
 
 def subprocessEz(command: list, user: str = None, filespecs: list = None, cwd: str = None, succStr: str = None, errStr: str = None):
 
