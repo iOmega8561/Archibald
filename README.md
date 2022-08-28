@@ -38,7 +38,7 @@ ExampleProfile = classes.profile(
     name    = "Example",                            # Profile name                    | str, MANDATORY
     type    = "Example",                            # Target system to be prompt      | str, MANDATORY
     drivers = True,                                 # Install graphics drivers        | bool, can omit, default False
-    pkgs    = dicts.pkgs["Ex"] + .. OR pkgs = ["pkg1", "pkg2" ...]                    | list, can omit, default []
+    pkgs    = packages.ex + packages.ex2 + .. OR pkgs = ["pkg1", "pkg2" ...]          | list, can omit, default []
     units   = ["test", "example"],                  # List of systemd units to enable | list, can omit, default None
     grops   = ["wheel", "example"],                 # List of user groups             | list, can omit, default None
     shell   = "/bin/exampleshell",                  # Custom shell binary             | str, can omit, default None

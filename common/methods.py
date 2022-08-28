@@ -1,10 +1,11 @@
 import subprocess, os
 
-def justLogname():
+def logname():
 
 	process = subprocess.run("logname",
 			stdout = subprocess.PIPE,
 			text = True)
+			
 	return process.stdout.rstrip("\n")
 
 def integerget(prompt: str, errStr: str = None):
@@ -111,5 +112,13 @@ def subprocessEz(command: list, user: str = None, filespecs: list = None, cwd: s
 		if errStr != None:
 			print(errStr)
 		
+		# Then raise
+		raise
+
+	except FileNotFoundError:
+
+		# File not found error
+		print("subprocessEz: EXECUTABLE NOT FOUND.")
+
 		# Then raise
 		raise
