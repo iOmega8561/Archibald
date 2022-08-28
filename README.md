@@ -19,9 +19,11 @@ It is best to run Archibald on a fresh Arch Linux manual installation, but minim
 ## How to use
 Archibald includes a default configuration, so you can simply ```git clone``` this repo and run
 ```
+sudo pacman -S python # if it's not installed already
+
 cd Archibald
-chmod +x archibald.py
-sudo ./archibald.py
+chmod +x main.py
+sudo ./main.py
 ```
 Configuration is found under Archibald/config/. More on it down below.
 
@@ -39,9 +41,9 @@ import profile # data structure class
 import file    # data structure class
 
 ExampleFile = file(                                                       
-            name = "ExampleConfig",                 # File name                          | str, Mandatory
-            path = "example/path",                  # File path                          | str, Mandatory
-            text = "sometextto\nbe\nwritten"),      # Text                               | str, Mandatory
+            name = "ExampleConfig",                 # File name                       | str, Mandatory
+            path = "example/path",                  # File path                       | str, Mandatory
+            text = "sometextto\nbe\nwritten"),      # Text                            | str, Mandatory
 
 ExampleProfile = profile(
     name    = "Example",                            # Profile name                    | str, MANDATORY
