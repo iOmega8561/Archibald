@@ -17,9 +17,10 @@ Archibald is a configurable python utility that allows to recreate Arch Linux se
 It is best to run Archibald on a fresh Arch Linux manual installation, but minimal archinstall setups are ok too.
 
 ## How to use
-Archibald includes a default configuration, so you can simply ```git clone``` this repo and run
+Archibald needs a booting Arch installation, a working internet connection and a sudo-enabled user to run.
+You can simply ```git clone``` this repo and
 ```
-sudo pacman -S python # if it's not installed already
+sudo pacman -S python
 
 cd Archibald
 chmod +x main.py
