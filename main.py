@@ -34,7 +34,7 @@ def main():
 		methods.log("Executing logged as root is not supported.", "err")
 		exit(1)
 	
-	methods.log("Welcome to Archibald, select one the following profiles:")
+	methods.log("Welcome to Archibald, select a profile:")
 	
 	# Build selection text
 	selection = "(Press CTRL+C to exit)\n"
@@ -57,7 +57,7 @@ def main():
 		##############################################################################
 
 		# Ask for zram
-		methods.log("Would you like Archibald to configure Zram?")
+		methods.log("Would you like to configure Zram?")
 		answer = input("Answer: ")
 
 		if any(x in answer for x in ["Y", "y", "Yes", "yes"]):
@@ -66,19 +66,19 @@ def main():
 		###############################################################################
 
 		# Ask for aur helper
-		methods.log("Would you like Archibald to install an AUR helper?")
+		methods.log("Would you like to install an AUR helper?")
 		answer = input("Answer: ")
 
 		if any(x in answer for x in ["Y", "y", "Yes", "yes"]):
 			setups.aur(user)
 
 		# Conclusion
-		methods.log("Archibald completed it's processes, please reboot!", "suc")
+		methods.log("All operations completed, please reboot!", "suc")
 
 	except KeyboardInterrupt:
 
 		# Just quit if ctrl+c
-		methods.log("Detected keyboard interrupt, Archibald will terminate", "wrn")
+		methods.log("Detected keyboard interrupt, terminating.", "wrn")
 		exit(1)
 
 if __name__ == "__main__":

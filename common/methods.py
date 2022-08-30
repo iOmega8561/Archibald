@@ -35,7 +35,7 @@ def integerget(prompt: str, wrnmsg: str = None):
 			if wrnmsg != None:
 				log(wrnmsg, "wrn")
 
-def makefile(name: str, path: str, errmsg: str = None):
+def makefile(name: str, path: str):
 	try:
 		
 		# Make parent folders if non existent
@@ -46,10 +46,8 @@ def makefile(name: str, path: str, errmsg: str = None):
 
 	# Except errors that could occur
 	except IOError or OSError:
-		
-		# Print error string if given
-		if errmsg != None:
-			log(errmsg, "err")
+
+		log(f"Could not open {path}/{name}.")
 		
 		# Then raise
 		raise

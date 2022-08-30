@@ -11,8 +11,7 @@ def zram(ramsize: str = "ram / 2"):
 	# Write zram config to /etc/systemd
 	file = methods.makefile(
 			name = "zram-generator.conf",
-			path = "/etc/systemd",
-			errmsg = "Could not open /etc/systemd/zram-generator.conf.")
+			path = "/etc/systemd")
 
 	file.write(f"[zram0]\nzram-size = {ramsize}")
 
@@ -83,8 +82,7 @@ def profile(profile: structures.profile , user: str):
 
 			file = methods.makefile(
 				name = f.name, 
-				path = f.path.format(home = f"/home/{user}"),
-				errmsg = f"Could not open {f.path}{f.name}.")
+				path = f.path.format(home = f"/home/{user}"))
 
 			file.write(f.text)
 	
