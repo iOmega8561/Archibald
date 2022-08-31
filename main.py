@@ -28,7 +28,7 @@ def main():
 
 			# Repeat input until a valid answer is given
 			methods.log("Number out of range, try again.", "wrn")
-			answer = methods.intGet(f"{selection}Answer: ", "Input not a number, retry.")
+			answer = methods.intGet(f"{selection}Answer: ")
 
 		# Configure selected profile
 		setups.profile(profiles.list[answer - 1], methods.username)
