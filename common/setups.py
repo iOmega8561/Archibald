@@ -1,8 +1,12 @@
 from common import methods, structures
 from userconf import packages
 
-def zram():
+def zram(ram: int):
 	
+	# Default if value is zero or minus
+	if ram == 0 or ram < 0:
+		ram = "min(ram / 2, 4096)"
+
 	# Try to install zram-generator
 	methods.subprocessRun(
 		cmd  = ["sudo", "pacman", "-S", "--noconfirm", "zram-generator"],
@@ -14,7 +18,7 @@ def zram():
 	methods.linuxFile(
 		path = "/etc/systemd",
 		name = "zram-generator.conf",
-		text = "[zram0]\nzram-size = ram / 2"
+		text = f"[zram0]\nzram-size = {ram}"
 	)
 
 	# Reload units

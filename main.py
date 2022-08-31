@@ -42,7 +42,11 @@ def main():
 		answer = input("Answer: ")
 
 		if any(x in answer for x in ["Y", "y", "Yes", "yes"]):
-			setups.zram()
+
+			methods.log("Enter desired zram size (0 for default).")
+			answer = methods.intGet("Answer (MB): ")
+
+			setups.zram(ram = answer)
 
 		###############################################################################
 
