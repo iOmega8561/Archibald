@@ -1,48 +1,49 @@
 from common import methods, structures
 from userconf import packages
 
-def zram(ramsize: str = "ram / 2"):
+def zram():
 	
 	# Try to install zram-generator
-	methods.subprocessEz(
-		command = ["pacman", "-S", "--noconfirm", "zram-generator"], 
-		errmsg = "Unexpected error installing zram-generator.")
+	methods.subprocessRun(
+		cmd  = ["sudo", "pacman", "-S", "--noconfirm", "zram-generator"],
+		logs = True,
+		err  = "Unexpected error installing zram-generator."
+	)
 		
 	# Write zram config to /etc/systemd
-	file = methods.makefile(
-			name = "zram-generator.conf",
-			path = "/etc/systemd")
-
-	file.write(f"[zram0]\nzram-size = {ramsize}")
+	methods.linuxFile(
+		path = "/etc/systemd",
+		name = "zram-generator.conf",
+		text = "[zram0]\nzram-size = ram / 2"
+	)
 
 	# Reload units
-	methods.subprocessEz(
-		command = ["systemctl", "daemon-reload"])
+	methods.subprocessRun(
+		cmd  = ["sudo", "systemctl", "daemon-reload"],
+		logs = True
+	)
 
 def aur(user: str):
 
-	# Try to remove pre-existent trash
-	methods.subprocessEz(
-		command = ["rm", "-fr", "paru"], cwd = f"/home/{user}")
+	if user == "root":
+
+		methods.log("Cannot run makepkg as root, skipping.", "err")
+		return
 
 	# Try git clone paru repository
-	methods.subprocessEz(
-		command = ["git", "clone", "https://aur.archlinux.org/paru"],
-		user = user,
-		cwd = f"/home/{user}",
-		errmsg = "Git encountered an unexpected error.")
+	methods.subprocessRun(
+		cmd  = ["git", "clone", "https://aur.archlinux.org/paru"],
+		logs = True,
+		err  = "Git encountered an unexpected error."
+	)
 
 	# Try to install dependencies, compile and install paru
-	methods.subprocessEz(command = ["makepkg", "-si", "--noconfirm", "--needed"],
-		user = user,
-		logfile = True,
-		cwd = f"/home/{user}/paru",
-		errmsg = "Could not install paru, check log files.")
-		
-	# Try to remove leftover trash
-	methods.subprocessEz(
-		command = ["rm", "-fr", "paru"], 
-		cwd = f"/home/{user}")
+	methods.subprocessRun(
+		cmd  = ["makepkg", "-si", "--noconfirm", "--needed"],
+		logs = True,
+		cwd  = "paru",
+		err  = "Could not install paru, check log files."
+	)
 
 def profile(profile: structures.profile , user: str):
 
@@ -51,7 +52,7 @@ def profile(profile: structures.profile , user: str):
 
 		# Try to find known graphics cards from lspci
 		methods.log("Searching for any known graphics device...", "wrn")
-		lspci = methods.subprocessEz(command = ["lspci"])
+		lspci = methods.subprocessRun(cmd = ["lspci"])
 		for device in packages.drivers:
 
 			# Repeat match for every user defined driver group
@@ -67,47 +68,53 @@ def profile(profile: structures.profile , user: str):
 		methods.log("Packages installation may take some time!", "wrn")
 
 		# Call pacman to install packages
-		methods.subprocessEz(
-			command = ["pacman", "-S", "--needed", "--noconfirm"] + profile.pkgs,
-			logfile = True, 
-			succmsg = "Successfully installed all packages!", 
-			errmsg = "Unexpected error, check pacman log file")
+		methods.subprocessRun(
+			cmd  = ["sudo", "pacman", "-S", "--needed", "--noconfirm"] + profile.pkgs,
+			logs = True,
+			succ = "Successfully installed all packages!", 
+			err  = "Unexpected error, check pacman log file"
+		)
 
 	if profile.files != None:
 
-		methods.log("Creating configuration files...", "exc")
+		methods.log("Creating configuration files...", "wrn")
 
 		# Config files creation
 		for i, f in enumerate(profile.files):
 
-			file = methods.makefile(
-				name = f.name, 
-				path = f.path.format(home = f"/home/{user}"))
-
-			file.write(f.text)
-	
-		# Archibald runs as root, home located files will be owned by root, let's fix that
-		methods.subprocessEz(command = ["chown", "-R", user, f"/home/{user}"])
+			methods.linuxFile(
+				path = f.path,
+				name = f.name,
+				text = f.text
+			)
 
 	if profile.groups != None:
 
+		methods.log("Setting user groups...", "wrn")
+
 		# Setting user groups one by one
 		for i in profile.groups:
-			methods.subprocessEz(command = ["usermod", "-aG", i, user])
+			methods.subprocessRun(
+				cmd  = ["sudo", "usermod", "-aG", i, user],
+				logs = True,
+			)
 
 	# Check if profile demands systemd enable
 	if profile.units != None:
 
 		# Try enable all at once
-		methods.subprocessEz(
-			command = ["systemctl", "enable"] + profile.units,
-			logfile = True,
-			errmsg = "Unexpected error, check systemctl log file")
+		methods.subprocessRun(
+			cmd  = ["sudo", "systemctl", "enable"] + profile.units,
+			logs = True,
+			err  = "Unexpected error, check systemctl log file"
+		)
 	
 	# Check if profile demands a chsh
 	if profile.shell != None:
 
 		# Try changing user shell
-		methods.subprocessEz(
-			command = ["chsh", "-s", profile.shell, user],
-			errmsg = f"Unexpected error changing shell to {profile.shell}.")
+		methods.subprocessRun(
+			cmd  = ["sudo", "chsh", "-s", profile.shell, user],
+			logs = True,
+			err  = f"Unexpected error changing shell to {profile.shell}."
+		)

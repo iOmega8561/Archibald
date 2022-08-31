@@ -2,62 +2,43 @@
 from common import methods, setups
 from userconf import profiles
 
+from os import getlogin
+
 def main():
 
-	# Check sudo privileges
-	whoami = methods.subprocessEz(["whoami"])
-	privileges = whoami.stdout.rstrip("\n")
-
-	if privileges != "root":
-
-		# Exit if not executing with sudo
-		methods.log("Archibald needs high privileges.", "err")
-		exit(1)
-
 	# Ensure this is running on Arch Linux
-	cat = methods.subprocessEz(["cat", "/etc/os-release"])
-	release = cat.stdout
+	with open("/etc/os-release", "r") as release:
 
-	if not "Arch Linux" in release:
+		if not "Arch Linux" in release.read():
 
-		# Exit if system is not Arch Linux (pacman is necessary)
-		methods.log("This is not Arch Linux.", "err")
-		exit(1)
+			# Exit if system is not Arch Linux (pacman is necessary)
+			methods.log("This is not Arch Linux.", "err")
+			exit(1)
 
-	# Ensure logged user is not root
-	logname = methods.subprocessEz(["logname"])
-	user = logname.stdout.rstrip("\n")
-
-	if user == "root":
-
-		# Exit if logged in as the root use (/home/root does not exist)
-		methods.log("Executing logged as root is not supported.", "err")
-		exit(1)
-	
 	methods.log("Welcome to Archibald, select a profile:")
 	
 	# Build selection text
-	selection = "(Press CTRL+C to exit)\n"
+	selection = "(Press CTRL+C anytime to exit)\n"
 	for i, p in enumerate(profiles.list):
 		selection += f"{i+1}) {p.name} | Profile target: {p.type}\n"
 
 	try:
 
-		# Integerget makes sure this is an integer input
-		answer = methods.integerget(f"{selection}Answer: ", "Input not a number, retry.")
+		# intGet makes sure this is an integer input
+		answer = methods.intGet(f"{selection}Answer: ")
 		while answer <= 0 or answer > len(profiles.list):
 
 			# Repeat input until a valid answer is given
 			methods.log("Number out of range, try again.", "wrn")
-			answer = methods.integerget(f"{selection}Answer: ", "Input not a number, retry.")
+			answer = methods.intGet(f"{selection}Answer: ", "Input not a number, retry.")
 
 		# Configure selected profile
-		setups.profile(profiles.list[answer - 1], user)
+		setups.profile(profiles.list[answer - 1], getlogin())
 
 		##############################################################################
 
 		# Ask for zram
-		methods.log("Would you like to configure Zram?")
+		methods.log("Do you wish to configure Zram?")
 		answer = input("Answer: ")
 
 		if any(x in answer for x in ["Y", "y", "Yes", "yes"]):
@@ -66,11 +47,11 @@ def main():
 		###############################################################################
 
 		# Ask for aur helper
-		methods.log("Would you like to install an AUR helper?")
+		methods.log("Do you wish to install an AUR helper?")
 		answer = input("Answer: ")
 
 		if any(x in answer for x in ["Y", "y", "Yes", "yes"]):
-			setups.aur(user)
+			setups.aur(getlogin())
 
 		# Conclusion
 		methods.log("All operations completed, please reboot!", "suc")
