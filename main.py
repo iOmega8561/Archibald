@@ -2,8 +2,6 @@
 from common import methods, setups
 from userconf import profiles
 
-from os import getlogin
-
 def main():
 
 	# Ensure this is running on Arch Linux
@@ -14,9 +12,9 @@ def main():
 			# Exit if system is not Arch Linux (pacman is necessary)
 			methods.log("This is not Arch Linux.", "err")
 			exit(1)
-
-	methods.log("Welcome to Archibald, select a profile:")
 	
+	methods.log(f"Welcome {methods.username}, select a profile:")
+
 	# Build selection text
 	selection = "(Press CTRL+C anytime to exit)\n"
 	for i, p in enumerate(profiles.list):
@@ -33,7 +31,7 @@ def main():
 			answer = methods.intGet(f"{selection}Answer: ", "Input not a number, retry.")
 
 		# Configure selected profile
-		setups.profile(profiles.list[answer - 1], getlogin())
+		setups.profile(profiles.list[answer - 1], methods.username)
 
 		##############################################################################
 
@@ -55,7 +53,7 @@ def main():
 		answer = input("Answer: ")
 
 		if any(x in answer for x in ["Y", "y", "Yes", "yes"]):
-			setups.aur(getlogin())
+			setups.aur(methods.username)
 
 		# Conclusion
 		methods.log("All operations completed, please reboot!", "suc")

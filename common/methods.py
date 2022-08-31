@@ -1,17 +1,19 @@
 import subprocess, os
 
-logtypes = {
-
-	"msg": "\033[1mMessage:\033[0m {text}",
-	"err": "\033[91mError:\033[0m {text}",
-	"wrn": "\033[91mWarning:\033[0m {text}",
-	"exc": "\033[93mExecuting:\033[0m {text}",
-	"suc": "\033[92mSuccess:\033[0m {text}",
-	"nof": "{text}"
-
-}
+global username
 
 def log(text: str, type: str = "msg"):
+
+	logtypes = {
+
+		"msg": "\033[1mMessage:\033[0m {text}",
+		"err": "\033[91mError:\033[0m {text}",
+		"wrn": "\033[91mWarning:\033[0m {text}",
+		"exc": "\033[93mExecuting:\033[0m {text}",
+		"suc": "\033[92mSuccess:\033[0m {text}",
+		"nof": "{text}"
+
+	}
 
 	if type in logtypes:
 		print(logtypes[type].format(text = text))
@@ -19,7 +21,7 @@ def log(text: str, type: str = "msg"):
 	else:
 		log("Invalid log type.", "err")
 
-def intGet(prompt: str, wrnmsg: str = None):
+def intGet(prompt: str):
 
 	# Repeat until a valid input is given
 	while True:
@@ -121,3 +123,15 @@ def subprocessRun(cmd: list, logs: bool = False, cwd: str = None, succ: str = No
 
 		# Then raise
 		raise
+
+if __name__ == "common.methods":
+
+	# Get whoami output when imported
+	whoami = subprocess.run(
+		["whoami"],
+		stdout = subprocess.PIPE,
+		text   = True
+	)
+
+	# Tranfsorm to single line
+	username = whoami.stdout.rstrip("\n")

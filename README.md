@@ -16,12 +16,12 @@ Archibald is a utility that deploys user defined configuration, atomatically. Ar
 
 ## How to use
 Archibald can be run either in arch-chroot or an already installed/configured system.
-It is best to have a bootloader installed and already set locale configuration.
+It is best to have sudo and locales already configured for your user.
+
+Python >= 3.10 needs to be installed
 
 After that you can simply ```git clone``` this repo and
 ```
-sudo pacman -S python
-
 cd Archibald
 chmod +x main.py
 ./main.py
