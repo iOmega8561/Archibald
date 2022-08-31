@@ -42,7 +42,7 @@ def aur(user: str):
 		cmd  = ["makepkg", "-si", "--noconfirm", "--needed"],
 		logs = True,
 		cwd  = "paru",
-		err  = "Could not install paru, check log files."
+		err  = "Could not install paru, check archibald.log"
 	)
 
 def profile(profile: structures.profile , user: str):
@@ -72,7 +72,7 @@ def profile(profile: structures.profile , user: str):
 			cmd  = ["sudo", "pacman", "-S", "--needed", "--noconfirm"] + profile.pkgs,
 			logs = True,
 			succ = "Successfully installed all packages!", 
-			err  = "Unexpected error, check pacman log file"
+			err  = "Unexpected error, check archibald.log"
 		)
 
 	if profile.files != None:
@@ -106,7 +106,7 @@ def profile(profile: structures.profile , user: str):
 		methods.subprocessRun(
 			cmd  = ["sudo", "systemctl", "enable"] + profile.units,
 			logs = True,
-			err  = "Unexpected error, check systemctl log file"
+			err  = "Unexpected error, check archibald.log"
 		)
 	
 	# Check if profile demands a chsh
