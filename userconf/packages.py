@@ -1,9 +1,13 @@
 # Drivers, don't touch
 
 drivers = {
+
     "NVIDIA Corporation": ["dkms", "nvidia-dkms", "nvidia-prime"],
+
     "Advanced Micro Devices": ["xf86-video-amdgpu", "libva-mesa-driver", "vulkan-radeon", "mesa-vdpau"],
+
     "Intel Corporation": ["xf86-video-intel", "libva-mesa-driver", "vulkan-intel", "mesa-vdpau"]
+
 }
 
 ##########################
@@ -18,4 +22,4 @@ cockpit = ["screen", "cockpit", "udisks2", "cockpit-storaged", "dmidecode", "dns
 
 gnome = ["gnome-shell", "gdm", "nautilus", "gnome-keyring", "gnome-terminal", "gnome-tweaks", "power-profiles-daemon", "malcontent", "gnome-control-center", "gnome-backgrounds", "gnome-themes-extra", "gnome-software", "eog", "gnome-calculator", "gedit", "evince", "xdg-user-dirs-gtk", "flatpak", "xdg-desktop-portal-gnome", "xdg-utils", "libqtxdg", "ttf-liberation", "ttf-droid", "noto-fonts-emoji"]
 
-plasma = ["plasma-desktop", "sddm", "sddm-kcm", "plasma-wayland-session", "dolphin", "systemsettings", "kscreen", "breeze-gtk", "kwallet", "konsole", "bluedevil", "power-profiles-daemon", "powerdevil", "plasma-nm", "plasma-workspace-wallpapers", "discover", "ark", "kate", "kcalc", "spectacle", "krunner", "plasma-disks", "partitionmanager", "okular", "flatpak", "xdg-desktop-portal-kde", "xdg-utils", "libqtxdg", "ttf-liberation", "ttf-droid", "noto-fonts-emoji"]
+plasma = ["plasma-desktop", "sddm", "sddm-kcm", "plasma-wayland-session", "dolphin", "systemsettings", "kde-gtk-config", "kscreen", "breeze-gtk", "kwallet", "konsole", "bluedevil", "power-profiles-daemon", "powerdevil", "plasma-nm", "plasma-workspace-wallpapers", "discover", "ark", "kate", "kcalc", "spectacle", "krunner", "plasma-disks", "partitionmanager", "okular", "flatpak", "xdg-desktop-portal-kde", "xdg-utils", "libqtxdg", "ttf-liberation", "ttf-droid", "noto-fonts-emoji"]

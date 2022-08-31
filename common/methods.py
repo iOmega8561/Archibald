@@ -1,6 +1,6 @@
 import subprocess, os
 
-global username
+global current
 
 def log(text: str, type: str = "msg"):
 
@@ -134,4 +134,4 @@ if __name__ == "common.methods":
 	)
 
 	# Tranfsorm to single line
-	username = whoami.stdout.rstrip("\n")
+	current = whoami.stdout.rstrip("\n")

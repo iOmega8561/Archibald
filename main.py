@@ -13,7 +13,7 @@ def main():
 			methods.log("This is not Arch Linux.", "err")
 			exit(1)
 	
-	methods.log(f"Welcome {methods.username}, select a profile:")
+	methods.log(f"Welcome {methods.current}, select a profile:")
 
 	# Build selection text
 	selection = "(Press CTRL+C anytime to exit)\n"
@@ -31,7 +31,7 @@ def main():
 			answer = methods.intGet(f"{selection}Answer: ")
 
 		# Configure selected profile
-		setups.profile(profiles.list[answer - 1], methods.username)
+		setups.profile(profiles.list[answer - 1], methods.current)
 
 		##############################################################################
 
@@ -53,7 +53,7 @@ def main():
 		answer = input("Answer: ")
 
 		if any(x in answer for x in ["Y", "y", "Yes", "yes"]):
-			setups.aur(methods.username)
+			setups.aur(methods.current)
 
 		# Conclusion
 		methods.log("All operations completed, please reboot!", "suc")
