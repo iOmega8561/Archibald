@@ -3,10 +3,10 @@
 This is a personal project, started for fun and personal purposes only. You DO take responsability if this breaks your installation. 
 
 ## What's this?
-Archibald is a configurable python utility that allows to recreate Arch Linux setups real fast. Archibald can:
+Archibald is a utility that deploys user defined configuration, atomatically. Archibald can:
 - Let the user select a profile;
 - Detect graphics cards;
-- Install packages via PacMan;
+- Install packages using pacman;
 - Enable systemd units;
 - Add user to certain groups;
 - Create configuration files;
@@ -14,24 +14,24 @@ Archibald is a configurable python utility that allows to recreate Arch Linux se
 - Configure zram;
 - Install aur helper.
 
-It is best to run Archibald on a fresh Arch Linux manual installation, but minimal archinstall setups are ok too.
-
 ## How to use
-Archibald needs a booting Arch installation, a working internet connection and a sudo-enabled user to run.
-You can simply ```git clone``` this repo and
+Archibald can be run either in arch-chroot or an already installed/configured system.
+It is best to have a bootloader installed and already set locale configuration.
+
+After that you can simply ```git clone``` this repo and
 ```
 sudo pacman -S python
 
 cd Archibald
 chmod +x main.py
-sudo ./main.py
+./main.py
 ```
-Configuration is found under Archibald/config/. More on it down below.
+Configuration is found under Archibald/userconf/. More on it down below.
 
 ## Configuration
 Once you get to edit Archibald's configuration, you'll see that it's pretty self explanatory.
 - packages.py defines (literally) groups of packages. One or more package groups can be used in a configured profile, using just python's algebraic syntax (pkgs = grp1 + grp2 + ... ).
-- files.py contains objects wich represent a configuration file that could be included into a profile. Archibald will create files for the selected profile object.
+- files.py contains descriptions of files that will be created on your system by Archibald (they should be included in the selected profile),
 - profiles.py contains a list. An object of that list is a profile, and here is an example:
 ```
 # User defined profiles
