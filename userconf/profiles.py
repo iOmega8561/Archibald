@@ -44,5 +44,5 @@ list = [
             files.logind,
             files.zshrc,
             files.htoprc
-        ]),
+        ])
 ]
