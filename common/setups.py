@@ -122,3 +122,29 @@ def profile(profile: structures.profile , user: str):
 			logs = True,
 			err  = f"Unexpected error changing shell to {profile.shell}."
 		)
+	
+	# Check if profile includes flatpaks
+	if profile.flatpaks != None:
+
+		# Install flatpak
+		methods.subprocessRun(
+			cmd  = ["sudo", "pacman", "-S", "--noconfirm", "flatpak"],
+			logs = True,
+		)
+
+		# Install requested flatpaks
+		methods.subprocessRun(
+			cmd  = ["flatpak", "install", "-y", "-v"] + profile.flatpaks,
+			logs = True,
+		)
+	
+	# Check if profile include custom commands
+	if profile.postcmd != None:
+
+		for command in profile.postcmd:
+
+			# Execute such commands one by one
+			methods.subprocessRun(
+				cmd  = ["bash", "-c", command],
+				logs = True
+			)
