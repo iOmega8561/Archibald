@@ -140,11 +140,9 @@ def profile(profile: structures.profile , user: str):
 	
 	# Check if profile include custom commands
 	if profile.bashcmd != None:
+		
+		methods.log("Parsing custom bash commands...", "wrn")
 
+		# Execute such commands one by one
 		for command in profile.bashcmd:
-
-			# Execute such commands one by one
-			methods.subprocessRun(
-				cmd  = ["bash", "-c", command],
-				logs = True
-			)
+			methods.subprocessRun(cmd  = ["bash", "-c", command])

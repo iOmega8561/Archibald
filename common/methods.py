@@ -76,7 +76,7 @@ def subprocessRun(cmd: list, logs: bool = False, cwd: str = None, succ: str = No
 	if logs:
 
 		# Display execution log
-		log(" ".join(map(str, cmd[0:5])), "exc")
+		log(" ".join(map(str, cmd)), "exc")
 
 		# Output will be redirected on logfile
 		stdout = open("archibald.log", "a")
