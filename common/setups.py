@@ -139,9 +139,9 @@ def profile(profile: structures.profile , user: str):
 		)
 	
 	# Check if profile include custom commands
-	if profile.postcmd != None:
+	if profile.bashcmd != None:
 
-		for command in profile.postcmd:
+		for command in profile.bashcmd:
 
 			# Execute such commands one by one
 			methods.subprocessRun(

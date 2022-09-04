@@ -62,7 +62,7 @@ list = [
             files.htoprc
         ],
 
-        postcmd = [
+        bashcmd = [
             "sudo rm /usr/share/applications/{avahi-discover.desktop,bssh.desktop,bvnc.desktop}"
         ])
 ]
