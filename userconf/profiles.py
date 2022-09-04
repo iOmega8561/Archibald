@@ -44,5 +44,25 @@ list = [
             files.logind,
             files.zshrc,
             files.htoprc
+        ]),
+    
+    profile(
+        name     = "Gnome",
+        type     = "Custom",
+        drivers  = True,
+        pkgs     = packages.basics + packages.display + packages.audio + packages.gnome,
+        units    = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "gdm"],
+        shell    = "/bin/zsh",
+        
+        flatpaks = ["com.github.tchx84.Flatseal", "com.github.GradienceTeam.Gradience"],
+
+        files = [
+            files.logind,
+            files.zshrc,
+            files.htoprc
+        ],
+
+        postcmd = [
+            "sudo rm /usr/share/applications/{avahi-discover.desktop,bssh.desktop,bvnc.desktop}"
         ])
 ]
