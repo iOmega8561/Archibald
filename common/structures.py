@@ -1,5 +1,5 @@
 class profile:
-	def __init__(self, name: str, type: str, drivers: bool = False, pkgs: list = [], units: list = None, groups: list = None, shell: str = None, flatpaks: list = None, postcmd: list = None, files: list = None):
+	def __init__(self, name: str, type: str, drivers: bool = False, pkgs: list = [], units: list = None, groups: list = None, shell: str = None, flatpaks: list = None, bashcmd: list = None, files: list = None):
 		self.name 	  = name
 		self.type 	  = type
 		self.drivers  = drivers
@@ -9,7 +9,7 @@ class profile:
 		self.files 	  = files
 		self.shell 	  = shell
 		self.flatpaks = flatpaks
-		self.postcmd  = postcmd
+		self.bashcmd  = bashcmd
 
 class file:
 	def __init__(self, name: str, path: str, text: str):
