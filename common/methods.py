@@ -69,7 +69,7 @@ def linuxFile(path: str, name: str, text: str):
 	tee.stdin.write(str.encode(text))
 	tee.stdin.close()
 
-def subprocessRun(cmd: list, logs: bool = False, cwd: str = None, succ: str = None, err: str = None):
+def subprocessRun(cmd: list, logs: bool = False, cwd: str = None):
 	stdout = subprocess.PIPE
 
 	# Check if logfile is required
@@ -99,20 +99,14 @@ def subprocessRun(cmd: list, logs: bool = False, cwd: str = None, succ: str = No
 			text   = True
 		)
 
-		# Print success if present
-		if succ != None:
-			log(succ, "suc")
-
 		# Always return process object
 		return process
 
 	# Except error if occurs
 	except subprocess.CalledProcessError:
-
-		# Print error if given
-		if err != None:
-			log(err, "err")
 		
+		log(f"Exception for {cmd[0:3]}, check archibald.log.", "err")
+
 		# Then raise
 		raise
 

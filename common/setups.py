@@ -10,8 +10,7 @@ def zram(ram: int):
 	# Try to install zram-generator
 	methods.subprocessRun(
 		cmd  = ["sudo", "pacman", "-S", "--noconfirm", "zram-generator"],
-		logs = True,
-		err  = "Unexpected error installing zram-generator."
+		logs = True
 	)
 		
 	# Write zram config to /etc/systemd
@@ -37,16 +36,14 @@ def aur(user: str):
 	# Try git clone paru repository
 	methods.subprocessRun(
 		cmd  = ["git", "clone", "https://aur.archlinux.org/paru"],
-		logs = True,
-		err  = "Git encountered an unexpected error."
+		logs = True
 	)
 
 	# Try to install dependencies, compile and install paru
 	methods.subprocessRun(
 		cmd  = ["makepkg", "-si", "--noconfirm", "--needed"],
 		logs = True,
-		cwd  = "paru",
-		err  = "Could not install paru, check archibald.log"
+		cwd  = "paru"
 	)
 
 def profile(profile: structures.profile , user: str):
@@ -74,9 +71,7 @@ def profile(profile: structures.profile , user: str):
 		# Call pacman to install packages
 		methods.subprocessRun(
 			cmd  = ["sudo", "pacman", "-S", "--needed", "--noconfirm"] + profile.pkgs,
-			logs = True,
-			succ = "Successfully installed all packages!", 
-			err  = "Unexpected error, check archibald.log"
+			logs = True
 		)
 
 	if profile.files != None:
@@ -100,7 +95,7 @@ def profile(profile: structures.profile , user: str):
 		for i in profile.groups:
 			methods.subprocessRun(
 				cmd  = ["sudo", "usermod", "-aG", i, user],
-				logs = True,
+				logs = True
 			)
 
 	# Check if profile demands systemd enable
@@ -109,8 +104,7 @@ def profile(profile: structures.profile , user: str):
 		# Try enable all at once
 		methods.subprocessRun(
 			cmd  = ["sudo", "systemctl", "enable"] + profile.units,
-			logs = True,
-			err  = "Unexpected error, check archibald.log"
+			logs = True
 		)
 	
 	# Check if profile demands a chsh
@@ -119,8 +113,7 @@ def profile(profile: structures.profile , user: str):
 		# Try changing user shell
 		methods.subprocessRun(
 			cmd  = ["sudo", "chsh", "-s", profile.shell, user],
-			logs = True,
-			err  = f"Unexpected error changing shell to {profile.shell}."
+			logs = True
 		)
 	
 	# Check if profile includes flatpaks
@@ -129,13 +122,13 @@ def profile(profile: structures.profile , user: str):
 		# Install flatpak
 		methods.subprocessRun(
 			cmd  = ["sudo", "pacman", "-S", "--noconfirm", "flatpak"],
-			logs = True,
+			logs = True
 		)
 
 		# Install requested flatpaks
 		methods.subprocessRun(
 			cmd  = ["flatpak", "install", "-y", "-v"] + profile.flatpaks,
-			logs = True,
+			logs = True
 		)
 	
 	# Check if profile include custom commands
