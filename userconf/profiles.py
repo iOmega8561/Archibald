@@ -1,5 +1,5 @@
 from userconf import packages, files
-from lib.utils import profile
+from lib.utils import profile, file
 
 # Check readme to edit these
 list = [

@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-
-
-from lib import linux, setup
-from lib.utils import log, intGet
+from lib import linux, utils, setup
 from userconf.profiles import list
 
 def main():
@@ -13,10 +10,10 @@ def main():
 		if not "Arch Linux" in release.read():
 
 			# Exit if system is not Arch Linux
-			log("This is not Arch Linux.", "err")
+			utils.log("This is not Arch Linux.", "err")
 			exit(1)
 	
-	log(f"Welcome {linux.whoami()}, select a profile:")
+	utils.log(f"Welcome {linux.whoami()}, select a profile:")
 
 	# Build selection text
 	selection = "(Press CTRL+C anytime to exit)\n"
@@ -26,23 +23,23 @@ def main():
 	try:
 
 		# intGet makes sure this is an integer input
-		answer = intGet(f"{selection}Answer: ")
+		answer = utils.intGet(f"{selection}Answer: ")
 		while answer <= 0 or answer > len(list):
 
 			# Repeat input until a valid answer is given
-			log("Number out of range, try again.", "wrn")
-			answer = intGet(f"{selection}Answer: ")
+			utils.log("Number out of range, try again.", "wrn")
+			answer = utils.intGet(f"{selection}Answer: ")
 
 		# Configure selected profile
 		setup.profile(list[answer-1], linux.whoami())
 
 		# Conclusion
-		log("All operations completed, please reboot!", "suc")
+		utils.log("All operations completed, please reboot!", "suc")
 
 	except KeyboardInterrupt:
 
 		# Just quit if ctrl+c
-		log("Detected keyboard interrupt, terminating.", "wrn")
+		utils.log("Detected keyboard interrupt, terminating.", "wrn")
 		exit(1)
 
 if __name__ == "__main__":
