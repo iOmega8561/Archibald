@@ -1,0 +1,49 @@
+#!/usr/bin/python3
+
+
+from lib import linux, setup
+from lib.utils import log, intGet
+from userconf.profiles import list
+
+def main():
+
+	# Ensure this is running on Arch Linux
+	with open("/etc/os-release", "r") as release:
+
+		if not "Arch Linux" in release.read():
+
+			# Exit if system is not Arch Linux
+			log("This is not Arch Linux.", "err")
+			exit(1)
+	
+	log(f"Welcome {linux.whoami()}, select a profile:")
+
+	# Build selection text
+	selection = "(Press CTRL+C anytime to exit)\n"
+	for i, p in enumerate(list):
+		selection += f"{i+1}) {p.name} | Profile target: {p.type}\n"
+
+	try:
+
+		# intGet makes sure this is an integer input
+		answer = intGet(f"{selection}Answer: ")
+		while answer <= 0 or answer > len(list):
+
+			# Repeat input until a valid answer is given
+			log("Number out of range, try again.", "wrn")
+			answer = intGet(f"{selection}Answer: ")
+
+		# Configure selected profile
+		setup.profile(list[answer-1], linux.whoami())
+
+		# Conclusion
+		log("All operations completed, please reboot!", "suc")
+
+	except KeyboardInterrupt:
+
+		# Just quit if ctrl+c
+		log("Detected keyboard interrupt, terminating.", "wrn")
+		exit(1)
+
+if __name__ == "__main__":
+	main()

@@ -1,5 +1,5 @@
 from userconf import packages, files
-from common.structures import profile
+from lib.utils import profile
 
 # Check readme to edit these
 list = [
@@ -50,15 +50,16 @@ list = [
         pkgs     = packages.basics + packages.display + packages.audio + packages.gnome,
         units    = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "gdm"],
         shell    = "/bin/zsh",
-        
+        aur      = True,
+
         flatpaks = [
-            "com.github.tchx84.Flatseal", 
-            "com.github.GradienceTeam.Gradience", 
+            "com.github.tchx84.Flatseal",
+            "com.github.GradienceTeam.Gradience",
             "org.gnome.Boxes"
         ],
 
         bashcmd  = [
-            "sudo rm /usr/share/applications/{avahi-discover.desktop,bssh.desktop,bvnc.desktop}"
+            "sudo rm -f /usr/share/applications/{avahi-discover.desktop,bssh.desktop,bvnc.desktop}"
         ],
 
         files    = [
