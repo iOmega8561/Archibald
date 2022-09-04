@@ -1,4 +1,4 @@
-import subprocess, os
+import subprocess, os, time
 
 global current
 
@@ -107,13 +107,17 @@ def subprocessRun(cmd: list, logs: bool = False, cwd: str = None):
 		
 		log(f"Exception for {cmd[0:3]}, check archibald.log.", "err")
 
+		time.sleep(5)
+
 		# Then raise
 		raise
 
 	except FileNotFoundError:
 
 		# File not found error
-		log("Executable not found.", "err")
+		log(f"{cmd[0:3]}, executable not found.", "err")
+
+		time.sleep(5)
 
 		# Then raise
 		raise

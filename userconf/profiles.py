@@ -11,8 +11,7 @@ list = [
         pkgs    = packages.basics + packages.display + packages.audio + packages.gnome,
         units   = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "gdm"],
         shell   = "/bin/zsh",
-
-        files = [
+        files   = [
             files.logind,
             files.zshrc,
             files.htoprc
@@ -25,8 +24,7 @@ list = [
         pkgs    = packages.basics + packages.display + packages.audio + packages.plasma,
         units   = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "sddm"],
         shell   = "/bin/zsh",
-
-        files = [
+        files   = [
             files.logind,
             files.zshrc,
             files.htoprc
@@ -39,30 +37,33 @@ list = [
         units   = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "sshd", "libvirtd", "cockpit.socket", "docker"],
         groups  = ["qemu", "libvirt", "docker"],
         shell   = "/bin/zsh",
-
-        files = [
+        files   = [
             files.logind,
             files.zshrc,
             files.htoprc
         ]),
     
     profile(
-        name     = "Gnome",
-        type     = "Custom",
+        name     = "iOmega8561",
+        type     = "Desktop",
         drivers  = True,
         pkgs     = packages.basics + packages.display + packages.audio + packages.gnome,
         units    = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups", "gdm"],
         shell    = "/bin/zsh",
         
-        flatpaks = ["com.github.tchx84.Flatseal", "com.github.GradienceTeam.Gradience"],
+        flatpaks = [
+            "com.github.tchx84.Flatseal", 
+            "com.github.GradienceTeam.Gradience", 
+            "org.gnome.Boxes"
+        ],
 
-        files = [
+        bashcmd  = [
+            "sudo rm /usr/share/applications/{avahi-discover.desktop,bssh.desktop,bvnc.desktop}"
+        ],
+
+        files    = [
             files.logind,
             files.zshrc,
             files.htoprc
-        ],
-
-        bashcmd = [
-            "sudo rm /usr/share/applications/{avahi-discover.desktop,bssh.desktop,bvnc.desktop}"
         ])
 ]
