@@ -54,4 +54,4 @@ pAdd(pClass(
         )
     ]
 ```
-After creating your profile.py file, you must append ```import profiles.yourprofile``` to Archibald/profiles/__init___.py
+After creating your profile.py file, you must append ```import profiles.yourprofile``` to Archibald/profiles/\___init___.py
