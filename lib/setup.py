@@ -1,5 +1,4 @@
 from lib import linux, utils
-from userconf import packages
 
 def errEx():
 	utils.log("Something went wrong, check archibald.log.", "err")
@@ -9,7 +8,7 @@ def drivers(drv: dict):
 	# Try to find known graphics cards from lspci
 	utils.log("Searching graphics cards.", "exc")
 	pcidevs = linux.lspci()
-	for device in packages.drivers:
+	for device in drv:
 
 		# Repeat match for every user defined driver group
 		match = [f"VGA compatible controller: {device}", f"Display controller: {device}"]
@@ -17,7 +16,7 @@ def drivers(drv: dict):
 
 			# If is found, add packages to profile.pkgs
 			utils.log(f"Found {device} device!", "suc")
-			return packages.drivers[device]
+			return drv[device]
 		
 		return []
 
@@ -44,9 +43,9 @@ def setupZram():
 
 def profile(profile: utils.profile , user: str):
 
-	if profile.drivers != False:
+	if profile.drivers != None:
 
-		profile.pkgs += drivers(packages.drivers)
+		profile.pkgs += drivers(profile.drivers)
 
 	if len(profile.pkgs) > 0:
 

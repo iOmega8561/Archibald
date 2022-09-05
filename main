@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from lib import linux, utils, setup
-from userconf.profiles import list
+from profiles import pList
 
 def main():
 
@@ -17,21 +17,21 @@ def main():
 
 	# Build selection text
 	selection = "(Press CTRL+C anytime to exit)\n"
-	for i, p in enumerate(list):
+	for i, p in enumerate(pList):
 		selection += f"{i+1}) {p.name} | Profile target: {p.type}\n"
 
 	try:
 
 		# intGet makes sure this is an integer input
-		answer = utils.intGet(f"{selection}Answer: ")
-		while answer <= 0 or answer > len(list):
+		idx = utils.intGet(f"{selection}Answer: ")
+		while idx <= 0 or i > len(list):
 
 			# Repeat input until a valid answer is given
 			utils.log("Number out of range, try again.", "wrn")
-			answer = utils.intGet(f"{selection}Answer: ")
+			idx = utils.intGet(f"{selection}Answer: ")
 
 		# Configure selected profile
-		setup.profile(list[answer-1], linux.whoami())
+		setup.profile(pList[idx-1], linux.whoami())
 
 		# Conclusion
 		utils.log("All operations completed, please reboot!", "suc")
