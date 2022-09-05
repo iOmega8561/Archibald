@@ -18,10 +18,18 @@ class fClass:
 		self.path = path
 		self.text = text
 
-pList = []
-
 def pAdd(profile: pClass):
-    pList += profile
+	if not "pList" in globals():
+		global pList 
+		pList = []
+	
+	ln = len(pList)
+
+	if ln == 0:
+		pList.insert(ln, profile)
+		return
+	
+	pList.insert(ln+1, profile)
 
 import profiles.gnome
 import profiles.plasma

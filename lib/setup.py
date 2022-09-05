@@ -41,7 +41,7 @@ def setupZram():
 	# Reload units
 	linux.systemctl.daemon_reload()
 
-def profile(profile: utils.profile , user: str):
+def profile(profile, user: str):
 
 	if profile.drivers != None:
 
