@@ -24,7 +24,7 @@ def main():
 
 		# intGet makes sure this is an integer input
 		idx = utils.intGet(f"{selection}Answer: ")
-		while idx <= 0 or i > len(list):
+		while idx <= 0 or i > len(pList):
 
 			# Repeat input until a valid answer is given
 			utils.log("Number out of range, try again.", "wrn")
