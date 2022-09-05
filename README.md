@@ -3,14 +3,14 @@
 This is a personal project, started for fun and personal purposes only. You DO take responsability if this breaks your installation. 
 
 ## What's this?
-Archibald is a python utility, meant to be used on a fresh system, that can help the user automate post-install procedures, such as installing a DE or writing config files somewhere in the system.
+Archibald is a python utility, meant to be used on a fresh system, that can help the user automate post-install procedures, such as installing a desktop environment or writing config files somewhere in the system.
 
 ## How to use
 Archibald can be run either in arch-chroot or a booted system.
 ### Requirements
 Python 3 must be installed and path-accessible
 A sudo user must be configured and used to run Archibald.
-
+### When ready
 Then you can simply ```git clone``` this repo and
 ```
 cd Archibald
@@ -54,3 +54,4 @@ pAdd(pClass(
         )
     ]
 ```
+After creating your profile.py file, you must append ```import profiles.yourprofile``` to Archibald/profiles/__init__.py
