@@ -1,12 +1,12 @@
-from lib import linux, utils
+from lib import console, linux
 
 def errEx():
-	utils.log("Something went wrong, check archibald.log.", "err")
+	console.log("Something went wrong, check archibald.log.", "err")
 	exit(1)
 
 def drivers(drv: dict):
 	# Try to find known graphics cards from lspci
-	utils.log("Searching graphics cards.", "exc")
+	console.log("Searching graphics cards.", "exc")
 	pcidevs = linux.lspci()
 	for device in drv:
 
@@ -15,15 +15,15 @@ def drivers(drv: dict):
 		if any(x in pcidevs for x in match):
 
 			# If is found, add packages to profile.pkgs
-			utils.log(f"Found {device} device!", "suc")
+			console.log(f"Found {device} device!", "suc")
 			return drv[device]
 		
 		return []
 
 def setupZram():
 	
-	utils.log("Enter desired zram size (0 for default).")
-	ram = utils.intGet("Answer (MB): ")
+	console.log("Enter desired zram size (0 for default).")
+	ram = console.intGet("Answer (MB): ")
 
 	# Default if value is zero or minus
 	if ram == 0 or ram < 0:
@@ -49,60 +49,60 @@ def profile(profile, user: str):
 
 	if len(profile.pkgs) > 0:
 
-		utils.log("Installing packages (may take some time).", "exc")
+		console.log("Installing packages (may take some time).", "exc")
 
 		if not linux.pacman.S(profile.pkgs):
 			errEx()
 
 	if profile.files != None:
 
-		utils.log("Creating configuration files.", "exc")
+		console.log("Creating configuration files.", "exc")
 
 		for f in profile.files:
 			linux.tee(f.path, f.name, f.text)
 
 	if profile.groups != None:
 
-		utils.log("Setting user groups.", "exc")
+		console.log("Setting user groups.", "exc")
 
 		if not linux.usermod.aG(profile.groups, user):
 			errEx()
 
 	if profile.units != None:
 		
-		utils.log("Enabling systend units.", "exc")
+		console.log("Enabling systend units.", "exc")
 
 		if not linux.systemctl.enable(profile.units):
 			errEx()
 	
 	if profile.shell != None:
 
-		utils.log("Changing user shell.", "exc")
+		console.log("Changing user shell.", "exc")
 
 		if not linux.chsh(profile.shell, user):
-			utils.log("Could not change shell.", "wrn")
+			console.log("Could not change shell.", "wrn")
 	
 	if profile.flatpaks != None:
 
-		utils.log("Installing flatpaks.", "exc")
+		console.log("Installing flatpaks.", "exc")
 
 		if not linux.flatpak.install(profile.flatpaks):
-			utils.log("Could not install flatpaks.", "wrn")
+			console.log("Could not install flatpaks.", "wrn")
 	
 	if profile.aur and user != "root":
 
-		utils.log("Installing paru aur helper.", "exc")
+		console.log("Installing paru aur helper.", "exc")
 
 		if linux.clone("https://aur.archlinux.org/paru"):
 
 			if not linux.makepkg.sir("paru"):
-				utils.log("Could not install paru.", "wrn")
+				console.log("Could not install paru.", "wrn")
 		else:
-			utils.log("Git could not resolve address.", "wrn")
+			console.log("Git could not resolve address.", "wrn")
 
 	if profile.bashcmd != None:
 		
-		utils.log("Custom shell commands.", "exc")
+		console.log("Custom shell commands.", "exc")
 		
 		for command in profile.bashcmd:
 			linux.bash_c(command)
