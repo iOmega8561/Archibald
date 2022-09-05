@@ -87,6 +87,7 @@ class makepkg:
 			    ["makepkg", "-sir", "--noconfirm", "--needed"],
 			    stdout = open("archibald.log", "a"),
 		    	stderr = subprocess.STDOUT,
+                cwd    = cwd,
 			    check  = True,
 			    text   = True
 		    )
