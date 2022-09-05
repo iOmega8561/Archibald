@@ -1,0 +1,46 @@
+#!/usr/bin/python3
+from lib import console, linux, setup
+from profiles import pList
+
+def main():
+
+	# Ensure this is running on Arch Linux
+	with open("/etc/os-release", "r") as release:
+
+		if not "Arch Linux" in release.read():
+
+			# Exit if system is not Arch Linux
+			console.log("This is not Arch Linux.", "err")
+			exit(1)
+	
+	console.log(f"Welcome {linux.whoami()}, select a profile:")
+
+	# Build selection text
+	selection = "(Press CTRL+C anytime to exit)\n"
+	for i, p in enumerate(pList):
+		selection += f"{i+1}) {p.name} | Profile target: {p.type}\n"
+
+	try:
+
+		# intGet makes sure this is an integer input
+		idx = console.intGet(f"{selection}Answer: ")
+		while idx <= 0 or i > len(pList):
+
+			# Repeat input until a valid answer is given
+			console.log("Number out of range, try again.", "wrn")
+			idx = console.intGet(f"{selection}Answer: ")
+
+		# Configure selected profile
+		setup.profile(pList[idx-1], linux.whoami())
+
+		# Conclusion
+		console.log("All operations completed, please reboot!", "suc")
+
+	except KeyboardInterrupt:
+
+		# Just quit if ctrl+c
+		console.log("Detected keyboard interrupt, terminating.", "wrn")
+		exit(1)
+
+if __name__ == "__main__":
+	main()

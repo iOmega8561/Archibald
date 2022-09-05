@@ -3,60 +3,55 @@
 This is a personal project, started for fun and personal purposes only. You DO take responsability if this breaks your installation. 
 
 ## What's this?
-Archibald is a utility that deploys user defined configuration, atomatically. Archibald can:
-- Let the user select a profile;
-- Detect graphics cards;
-- Install packages using pacman;
-- Enable systemd units;
-- Add user to certain groups;
-- Create configuration files;
-- Change the user shell;
-- Configure zram;
-- Install aur helper.
+Archibald is a python utility, meant to be used on a fresh system, that can help the user automate post-install procedures, such as installing a desktop environment or writing config files somewhere in the system.
 
 ## How to use
-Archibald can be run either in arch-chroot or an already installed/configured system.
-It is best to have sudo and locales already configured for your user.
-
-Python >= 3.10 needs to be installed
-
-After that you can simply ```git clone``` this repo and
+Archibald can be run either in arch-chroot or a booted system.
+### Requirements
+Python 3 must be installed and path-accessible
+A sudo user must be configured and used to run Archibald.
+### When ready
+Then you can simply ```git clone``` this repo and
 ```
 cd Archibald
-chmod +x main.py
-./main.py
+chmod +x main
+./main
 ```
-Configuration is found under Archibald/userconf/. More on it down below.
+Profiles are found under Archibald/profiles/. More on it down below.
 
 ## Configuration
-Once you get to edit Archibald's configuration, you'll see that it's pretty self explanatory.
-- packages.py defines (literally) groups of packages. One or more package groups can be used in a configured profile, using just python's algebraic syntax (pkgs = grp1 + grp2 + ... ).
-- files.py contains descriptions of files that will be created on your system by Archibald (they should be included in the selected profile),
-- profiles.py contains a list. An object of that list is a profile, and here is an example:
+Profiles can be created and dropped under Archibald/profiles/, they must contain a specific set of attributes that will be parsed by Archibald at runtime. Here is an example.py profile:
 ```
-# User defined profiles
-# Read carefully any bad config could be catastrofic
-# The order of profile childs is not relevant
+from profiles import pClass, fClass, pAdd
 
-import profile # data structure class
-import file    # data structure class
+pAdd(pClass(
+    name     = "Example",                            # Profile name                    | str, MANDATORY
+    
+    type     = "Example",                            # Target system to be prompt      | str, MANDATORY
+    
+    drivers  = True,                                 # Install graphics drivers        | bool, can omit, default False
+    
+    pkgs     = packages.ex + packages.ex2 + .. OR pkgs = ["pkg1", "pkg2" ...]          | list, can omit, default []
+    
+    units    = ["test", "example"],                  # List of systemd units to enable | list, can omit, default None
+    
+    groups   = ["wheel", "example"],                 # List of user groups             | list, can omit, default None
+    
+    shell    = "/bin/somecustomshell",               # Custom shell binary             | str, can omit, default None
+    
+    aur      = True                                  # Install or not paru             | bool, can omit, default False
 
-ExampleFile = file(                                                       
-            name = "ExampleConfig",                 # File name                       | str, Mandatory
-            path = "example/path",                  # File path                       | str, Mandatory
-            text = "sometextto\nbe\nwritten"),      # Text                            | str, Mandatory
+    flatpaks = ["org.some.flatpak", "another"]       # Flatpak list                    | list, can omit, default None
 
-ExampleProfile = profile(
-    name    = "Example",                            # Profile name                    | str, MANDATORY
-    type    = "Example",                            # Target system to be prompt      | str, MANDATORY
-    drivers = True,                                 # Install graphics drivers        | bool, can omit, default False
-    pkgs    = packages.ex + packages.ex2 + .. OR pkgs = ["pkg1", "pkg2" ...]          | list, can omit, default []
-    units   = ["test", "example"],                  # List of systemd units to enable | list, can omit, default None
-    grops   = ["wheel", "example"],                 # List of user groups             | list, can omit, default None
-    shell   = "/bin/exampleshell",                  # Custom shell binary             | str, can omit, default None
-    files   = [                                     # Profile only config files       | list, can omit, default None
-        ExampleFile,
-        Exaple2,
-        ...
+    bashcmd  = ["a command", "another command"]      # Bash arbitrary commands         | list, can omit, default None
+
+    files    = [                                     # Profile only config files       | list, can omit, default None
+        
+        pFile( 
+            name = "somerandomconfig.conf",                                           | str, MANDATORY
+            path = "{home}/path/in/your/home",                                        | str, MANDATORY
+            text = "somefilecontents\nhelloworld"                                     | str, MANDATORY
+        )
     ]
 ```
+After creating your profile.py file, you must append ```import profiles.yourprofile``` to Archibald/profiles/\___init___.py
