@@ -2,7 +2,7 @@ from profiles import pClass, fClass, pAdd
 
 pAdd(pClass(
     
-    name    = "Gnome",
+    name    = "Custom",
 
     type    = "Desktop",
 
