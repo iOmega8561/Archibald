@@ -20,27 +20,6 @@ def drivers(drv: dict):
 		
 		return []
 
-def setupZram():
-	
-	console.log("Enter desired zram size (0 for default).")
-	ram = console.intGet("Answer (MB): ")
-
-	# Default if value is zero or minus
-	if ram == 0 or ram < 0:
-		ram = "min(ram / 2, 4096)"
-
-	linux.pacman.S(["zram-generator"])
-	
-	# Write zram config to /etc/systemd
-	linux.tee(
-		"/etc/systemd", 
-		"zram-generator.conf", 
-		f"[zram0]\nzram-size = {ram}"
-	)
-
-	# Reload units
-	linux.systemctl.daemon_reload()
-
 def profile(profile, user: str):
 
 	if profile.drivers != None:
