@@ -26,7 +26,7 @@ def profile(profile, user: str):
 
 		profile.pkgs += drivers(profile.drivers)
 
-	if len(profile.pkgs) > 0:
+	if profile.pkgs != None and len(profile.pkgs) > 0:
 
 		console.log("Installing packages (may take some time).", "exc")
 
@@ -68,7 +68,7 @@ def profile(profile, user: str):
 		if not linux.flatpak.install(profile.flatpaks):
 			console.log("Could not install flatpaks.", "wrn")
 	
-	if profile.aur and user != "root":
+	if profile.aur != None and user != "root":
 
 		console.log("Installing paru aur helper.", "exc")
 
