@@ -110,7 +110,7 @@ def resolve(p_dict: dict, index: int, user: str = linux.whoami()):
 		__apply(p_dict[key], user)
 
 		# Append profile to resolved
-		__resolved.append(dep)
+		__resolved.append(key)
 		return
 
 	# Iter profile dependencies list
@@ -140,4 +140,4 @@ def resolve(p_dict: dict, index: int, user: str = linux.whoami()):
 	__apply(p_dict[key], user)
 	
 	# Append profile to resolved
-	__resolved.append(dep)
+	__resolved.append(key)
