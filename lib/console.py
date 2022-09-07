@@ -1,18 +1,18 @@
+__formats = {
+
+	"msg": "\033[1mMessage:\033[0m {text}",
+	"err": "\033[91mError:\033[0m {text}",
+	"wrn": "\033[91mWarning:\033[0m {text}",
+	"exc": "\033[93mExeclog:\033[0m {text}",
+	"suc": "\033[92mSuccess:\033[0m {text}",
+	"nof": "{text}"
+
+}
+
 def log(text: str, type: str = "msg"):
 
-	logtypes = {
-
-		"msg": "\033[1mMessage:\033[0m {text}",
-		"err": "\033[91mError:\033[0m {text}",
-		"wrn": "\033[91mWarning:\033[0m {text}",
-		"exc": "\033[93mExecuting:\033[0m {text}",
-		"suc": "\033[92mSuccess:\033[0m {text}",
-		"nof": "{text}"
-
-	}
-
-	if type in logtypes:
-		print(logtypes[type].format(text = text))
+	if type in __formats:
+		print(__formats[type].format(text = text))
 
 	else:
 		log("Invalid log type.", "err")

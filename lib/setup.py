@@ -78,7 +78,7 @@ def __apply(profile, user: str):
 	
 	if profile.aur and user != "root":
 
-		console.log("Installing paru aur helper.", "exc")
+		console.log("Installing paru and AUR packages.", "exc")
 
 		if not linux.paru.setup():
 			console.log("Could not install paru.", "wrn")
