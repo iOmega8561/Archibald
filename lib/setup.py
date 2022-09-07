@@ -24,10 +24,12 @@ def profile(profile, user: str):
 
 	if profile.gfxd != None:
 
+		drivers = parsePCI(profile.gfxd)
+
 		if profile.pkgs == None:
-			profile.pkgs = parsePCI(profile.gfxd)
-		else:
-			profile.pkgs += parsePCI(profile.gfxd)
+			profile.pkgs = drivers
+		elif drivers != None:
+			profile.pkgs += drivers
 
 	if profile.pkgs != None:
 		
