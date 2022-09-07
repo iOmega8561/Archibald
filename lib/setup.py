@@ -24,7 +24,7 @@ def profile(profile, user: str):
 
 	if profile.gfxd != None:
 
-		if profile.pkgs != None:
+		if profile.pkgs == None:
 			profile.pkgs = parsePCI(profile.gfxd)
 		else:
 			profile.pkgs += parsePCI(profile.gfxd)
