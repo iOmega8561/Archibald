@@ -20,38 +20,37 @@ chmod +x main
 Profiles are found under Archibald/profiles/. More on it down below.
 
 ## Configuration
-Profiles can be created and dropped under Archibald/profiles/, they must contain a specific set of attributes that will be parsed by Archibald at runtime. Here is an example.py profile:
+Profiles can be created and dropped under Archibald/profiles/, they must respect a specific set of attributes that will be parsed by Archibald at runtime. Here is an example.py profile:
 ```
-from profiles import pClass, fClass, pAdd
+deps     = ["a_profile", "another"]              # Profile dependencies            | list, can omit
 
-pAdd(pClass(
-    name     = "Example",                            # Profile name                    | str, MANDATORY
-    
-    type     = "Example",                            # Target system to be prompt      | str, MANDATORY
-    
-    drivers  = True,                                 # Install graphics drivers        | bool, can omit, default False
-    
-    pkgs     = packages.ex + packages.ex2 + .. OR pkgs = ["pkg1", "pkg2" ...]          | list, can omit, default []
-    
-    units    = ["test", "example"],                  # List of systemd units to enable | list, can omit, default None
-    
-    groups   = ["wheel", "example"],                 # List of user groups             | list, can omit, default None
-    
-    shell    = "/bin/somecustomshell",               # Custom shell binary             | str, can omit, default None
-    
-    aur      = True                                  # Install or not paru             | bool, can omit, default False
-
-    flatpaks = ["org.some.flatpak", "another"]       # Flatpak list                    | list, can omit, default None
-
-    bashcmd  = ["a command", "another command"]      # Bash arbitrary commands         | list, can omit, default None
-
-    files    = [                                     # Profile only config files       | list, can omit, default None
+name     = "Example"                             # Profile name                    | str, MANDATORY
         
-        pFile( 
-            name = "somerandomconfig.conf",                                           | str, MANDATORY
-            path = "{home}/path/in/your/home",                                        | str, MANDATORY
-            text = "somefilecontents\nhelloworld"                                     | str, MANDATORY
-        )
+drivers  = {                                     # Graphics drivers                | dict, can omit
+
+    "A Gpu Manifacturer": ["driverpackage1", "mesasomething"]
+
+}
+    
+pkgs     = packages.ex + packages.ex2 + .. OR pkgs = ["pkg1", "pkg2" ...]          | list, can omit
+    
+units    = ["test", "example"]                   # List of systemd units to enable | list, can omit
+    
+groups   = ["wheel", "example"]                  # List of user groups             | list, can omit
+    
+shell    = "/bin/somecustomshell"                # Custom shell binary             | str, can omit
+    
+aur      = ["aurpkg", "another"]                 # Install or not paru             | list, can omit
+
+flatpaks = ["org.some.flatpak", "another"]       # Flatpak list                    | list, can omit
+
+bash     = ["a command", "another command"]      # Bash arbitrary commands         | list, can omit
+
+files    = {                                     # Profile only config files       | dict, can omit
+        
+    "filename": [
+        "some/system/path/like/{home}",
+        "somerandomtexttoputinyourfile"
     ]
+}
 ```
-After creating your profile.py file, you must append ```import profiles.yourprofile``` to Archibald/profiles/\___init___.py

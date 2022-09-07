@@ -93,6 +93,8 @@ def __apply(profile, user: str):
 		for command in profile.bash:
 			linux.bash_c(command)
 
+__resolved = []
+
 def resolve(p_dict: dict, index: int, user: str = linux.whoami()):
 	
 	# Get indexed keys list
@@ -111,15 +113,23 @@ def resolve(p_dict: dict, index: int, user: str = linux.whoami()):
 	# Iter profile dependencies list
 	for dep in p_dict[key].deps:
 
-		# Check if dependency profile exists
-		if p_dict[dep]:
+		# Check dependency exists and not duplicate
+		if p_dict[dep] and dep not in __resolved:
 
-			# If yes, apply it
+			# Append dependency as resolved
+			__resolved.append(dep)
+
+			# If yes, resolve it's dependencies
 			resolve(p_dict, indexed.index(dep), user)
 		
+		elif dep in __resolved:
+
+			# Just skip dependency
+			continue
+
 		else:
 
-			# If not, exit
+			# If does not exist, exit
 			console.log(f"Missing dep. {dep} required by {key}", "wrn")
 			__fatal()
 
