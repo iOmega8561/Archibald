@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from lib import console, linux, setup
-from profiles import parse as getprofiles
+from profiles import profiles_strap
 
 def main():
 
@@ -13,27 +13,26 @@ def main():
 			console.log("This is not Arch Linux.", "err")
 			exit(1)
 	
-	p_list = getprofiles(getlist = True)
+	username, p_dict, index = linux.whoami(), profiles_strap(), 1
 
-	console.log(f"Welcome {linux.whoami()}, select a profile:")
+	console.log(f"Welcome {username}, select a profile:")
 	
-	# Build selection text
-	selection = "(Press CTRL+C anytime to exit)\n"
-	for i, p in enumerate(p_list):
-		selection += f"{i+1}) {p.name} | Profile target: {p.type}\n"
+	for P in p_dict:
+		console.log(f"{index}) {p_dict[P].name}", "nof")
+		index += 1
 
 	try:
 
 		# intGet makes sure this is an integer input
-		idx = console.intGet(f"{selection}Answer: ")
-		while idx <= 0 or idx > len(p_list):
+		input = console.intGet(f"Answer: ")
+		while input <= 0 or input > len(p_dict):
 
 			# Repeat input until a valid answer is given
 			console.log("Number out of range, try again.", "wrn")
-			idx = console.intGet(f"{selection}Answer: ")
+			input = console.intGet(f"Answer: ")
 
 		# Configure selected profile
-		setup.profile(p_list[idx-1], linux.whoami())
+		setup.resolve(p_dict, input-1, username)
 
 		# Conclusion
 		console.log("All operations completed, please reboot!", "suc")

@@ -1,10 +1,11 @@
 from lib import console, linux
 
-def errEx():
+def __fatal():
+
 	console.log("Something went wrong, check archibald.log.", "err")
 	exit(1)
 
-def parsePCI(gfxd):
+def __parse_pci(gfxd):
 	
 	# Try to find known pci devs from lspci
 	console.log("Parsing pci devices.", "exc")
@@ -19,61 +20,63 @@ def parsePCI(gfxd):
 			# If is found, add packages to profile.pkgs
 			console.log(f"Found {device} device!", "suc")
 			return gfxd[device]
+	return []
 
-def profile(profile, user: str):
+def __apply(profile, user: str):
+	
+	console.log(f"Resolving profile {profile.name}", "wrn")
 
-	if profile.gfxd != None:
+	if profile.gfxd and not profile.pkgs:
 
-		drivers = parsePCI(profile.gfxd)
+		profile.pkgs = __parse_pci(profile.gfxd)
 
-		if profile.pkgs == None:
-			profile.pkgs = drivers
-		elif drivers != None:
-			profile.pkgs += drivers
+	elif profile.gfxd:
+		
+		profile.pkgs += __parse_pci(profile.gfxd)
 
-	if profile.pkgs != None:
+	if profile.pkgs:
 		
 		console.log("Installing packages (may take some time).", "exc")
 
 		if not linux.pacman.S(profile.pkgs):
-			errEx()
+			__fatal()
 
-	if profile.files != None:
+	if profile.files:
 
 		console.log("Creating configuration files.", "exc")
 
 		for f in profile.files:
 			linux.tee(f.path, f.name, f.text)
 
-	if profile.groups != None:
+	if profile.groups:
 
 		console.log("Setting user groups.", "exc")
 
 		if not linux.usermod.aG(profile.groups, user):
-			errEx()
+			__fatal()
 
-	if profile.units != None:
+	if profile.units:
 		
 		console.log("Enabling systend units.", "exc")
 
 		if not linux.systemctl.enable(profile.units):
-			errEx()
+			__fatal()
 	
-	if profile.shell != None:
+	if profile.shell:
 
 		console.log("Changing user shell.", "exc")
 
 		if not linux.chsh(profile.shell, user):
 			console.log("Could not change shell.", "wrn")
 	
-	if profile.flatpaks != None:
+	if profile.flatpaks:
 
 		console.log("Installing flatpaks.", "exc")
 
 		if not linux.flatpak.install(profile.flatpaks):
 			console.log("Could not install flatpaks.", "wrn")
 	
-	if profile.aur != None and user != "root":
+	if profile.aur and user != "root":
 
 		console.log("Installing paru aur helper.", "exc")
 
@@ -84,11 +87,43 @@ def profile(profile, user: str):
 		else:
 			console.log("Git could not resolve address.", "wrn")
 
-	if profile.bashcmd != None:
+	if profile.bash:
 		
 		console.log("Custom shell commands.", "exc")
 		
 		for command in profile.bashcmd:
 			linux.bash_c(command)
 
+def resolve(p_dict: dict, index: int, user: str = linux.whoami()):
+	
+	# Get indexed keys list
+	indexed = list(p_dict.keys())
+	
+	# Get key from caller index
+	key = indexed[index]
 
+	# Check if profile has dependencies
+	if not p_dict[key].deps:
+
+		# If not just apply profile and return
+		__apply(p_dict[key], user)
+		return
+
+	# Iter profile dependencies list
+	for dep in p_dict[key].deps:
+
+		# Check if dependency profile exists
+		if p_dict[dep]:
+
+			# If yes, apply it
+			resolve(p_dict, indexed.index(dep), user)
+		
+		else:
+
+			# If not, exit
+			console.log(f"Missing dep. {dep} required by {key}", "wrn")
+			__fatal()
+
+	# Apply desired profile
+	__apply(p_dict[key], user)
+				

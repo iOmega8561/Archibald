@@ -34,16 +34,15 @@ class profile:
 	__attr_l = {
 		"deps":     __attr(list, False),
 		"name":     __attr(str, True),
-		"type":     __attr(str, True),
 		"gfxd": 	__attr(dict, False),
 		"pkgs":     __attr(list, False),
 		"units":    __attr(list, False),
 		"groups":   __attr(list, False),
 		"shell":    __attr(str, False),
-		"aur":      __attr(bool, False),
+		"aur":      __attr(list, False),
 		"files":	__attr(dict, False),
 		"flatpaks": __attr(list, False),
-		"bashcmd":  __attr(list, False)
+		"bash":     __attr(list, False)
 	}
 
 
@@ -92,21 +91,12 @@ class profile:
 
 				# Just copy attribute value
 				setattr(self, attr, getattr(obj, attr))
-	
-#def __dependencies(obj: dict):
 
-#	for id in obj:
+def profiles_strap():
 
-#		if obj[id].deps:
+	dir, profiles_store = dirname(__file__), {}
 
-#			for i, dep in obj[id].deps:
-
-
-def parse(getlist: bool = False):
-
-	profiles_store, name = {}, dirname(__file__)
-
-	for f in listdir(name):
+	for f in listdir(dir):
 
 		# Skip if name starts with __
 		if f[0:2] == "__":
@@ -121,7 +111,4 @@ def parse(getlist: bool = False):
 		# Strap profile
 		profiles_store[f] = profile(f, obj)
 	
-	if getlist:
-		return list(profiles_store.values())
-
 	return profiles_store
