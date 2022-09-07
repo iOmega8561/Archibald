@@ -39,7 +39,7 @@ class profile:
 	__attr_l = {
 		"name":     __attr(str, required = True),
 		"type":     __attr(str, required = True),
-		"drivers":  __attr(dict),
+		"gfxd": 	__attr(dict),
 		"pkgs":     __attr(list),
 		"units":    __attr(list),
 		"groups":   __attr(list),
@@ -102,13 +102,9 @@ class profile:
 from os import listdir
 from os.path import dirname
 
-def main():
+def parse(getlist: bool = False):
 
-	global profiles_store
-
-	profiles_store = []
-
-	name = dirname(__file__)
+	profiles_store, name = {}, dirname(__file__)
 
 	for f in listdir(name):
 
@@ -123,7 +119,9 @@ def main():
 		imp = __import__(f"profiles.{f}", fromlist=[""])
 
 		# Strap profile
-		profiles_store.append(profile(imp))
+		profiles_store[f] = profile(imp)
+	
+	if getlist:
+		return list(profiles_store.values())
 
-if __name__ == "profiles":
-	main()
+	return profiles_store

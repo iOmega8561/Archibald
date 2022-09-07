@@ -4,11 +4,13 @@ def errEx():
 	console.log("Something went wrong, check archibald.log.", "err")
 	exit(1)
 
-def drivers(drv: dict):
-	# Try to find known graphics cards from lspci
-	console.log("Searching graphics cards.", "exc")
+def drivers(gfxd: dict):
+
+	# Try to find known pci devs from lspci
+	console.log("Parsing pci devices.", "exc")
 	pcidevs = linux.lspci()
-	for device in drv:
+
+	for device in gfxd:
 
 		# Repeat match for every user defined driver group
 		match = [f"VGA compatible controller: {device}", f"Display controller: {device}"]
@@ -16,18 +18,21 @@ def drivers(drv: dict):
 
 			# If is found, add packages to profile.pkgs
 			console.log(f"Found {device} device!", "suc")
-			return drv[device]
+			return gfxd[device]
 		
-		return []
+	return None
 
 def profile(profile, user: str):
 
-	if profile.drivers != None:
+	if profile.gfxd != None:
 
-		profile.pkgs += drivers(profile.drivers)
+		if profile.pkgs != None:
+			profile.pkgs = drivers(profile.gfxd)
+		else:
+			profile.pkgs += drivers(profile.gfxd)
 
 	if profile.pkgs != None and len(profile.pkgs) > 0:
-
+		
 		console.log("Installing packages (may take some time).", "exc")
 
 		if not linux.pacman.S(profile.pkgs):
