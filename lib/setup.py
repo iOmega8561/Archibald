@@ -4,8 +4,8 @@ def errEx():
 	console.log("Something went wrong, check archibald.log.", "err")
 	exit(1)
 
-def drivers(gfxd: dict):
-
+def parsePCI(gfxd):
+	
 	# Try to find known pci devs from lspci
 	console.log("Parsing pci devices.", "exc")
 	pcidevs = linux.lspci()
@@ -19,19 +19,17 @@ def drivers(gfxd: dict):
 			# If is found, add packages to profile.pkgs
 			console.log(f"Found {device} device!", "suc")
 			return gfxd[device]
-		
-	return None
 
 def profile(profile, user: str):
 
 	if profile.gfxd != None:
 
 		if profile.pkgs != None:
-			profile.pkgs = drivers(profile.gfxd)
+			profile.pkgs = parsePCI(profile.gfxd)
 		else:
-			profile.pkgs += drivers(profile.gfxd)
+			profile.pkgs += parsePCI(profile.gfxd)
 
-	if profile.pkgs != None and len(profile.pkgs) > 0:
+	if profile.pkgs != None:
 		
 		console.log("Installing packages (may take some time).", "exc")
 
