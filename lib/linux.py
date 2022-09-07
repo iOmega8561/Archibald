@@ -146,12 +146,22 @@ class pacman:
 class paru:
 
     def setup():
-        if not clone("https://aur.archlinux.org/paru") or not makepkg.sir("paru"):
-            return False
+        try:
+            subprocess.run(
+			    ["paru", "--version"],
+			    stdout = subprocess.DEVNULL,
+		    	stderr = subprocess.STDOUT,
+			    check  = True,
+			    text   = True
+		    )
+        except FileNotFoundError:
+            if not clone("https://aur.archlinux.org/paru") or not makepkg.sir("paru"):
+                return False
+        
+        return True
 
     # sudo pacman -S pkgs
     def S(pkgs: list):
-
         try:
 
             # Invoke subprocess
