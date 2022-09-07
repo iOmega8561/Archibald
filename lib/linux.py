@@ -143,6 +143,33 @@ class pacman:
             # Return false for failure
             return False
 
+class paru:
+
+    def setup():
+        if not clone("https://aur.archlinux.org/paru") or not makepkg.sir("paru"):
+            return False
+
+    # sudo pacman -S pkgs
+    def S(pkgs: list):
+
+        try:
+
+            # Invoke subprocess
+            subprocess.run(
+			    ["paru", "-S", "--noconfirm"] + pkgs,
+			    stdout = open("archibald.log", "a"),
+		    	stderr = subprocess.STDOUT,
+			    check  = True,
+			    text   = True
+		    )
+
+            # Return true for success
+            return True
+        except subprocess.CalledProcessError:
+
+            # Return false for failure
+            return False
+
 class flatpak:
 
     # flatpak install flatpaks

@@ -80,18 +80,17 @@ def __apply(profile, user: str):
 
 		console.log("Installing paru aur helper.", "exc")
 
-		if linux.clone("https://aur.archlinux.org/paru"):
-
-			if not linux.makepkg.sir("paru"):
-				console.log("Could not install paru.", "wrn")
-		else:
-			console.log("Git could not resolve address.", "wrn")
+		if not linux.paru.setup():
+			console.log("Could not install paru.", "wrn")
+		
+		elif not linux.paru.S(profile.aur):
+			console.log("Could not install aur packages.", "wrn")
 
 	if profile.bash:
 		
 		console.log("Custom shell commands.", "exc")
 		
-		for command in profile.bashcmd:
+		for command in profile.bash:
 			linux.bash_c(command)
 
 def resolve(p_dict: dict, index: int, user: str = linux.whoami()):
