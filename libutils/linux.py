@@ -1,5 +1,7 @@
 import subprocess, os
 
+os.makedirs("logfiles", exist_ok=True)
+
 class usermod:
 
     # sudo usermod -aG groups user
@@ -10,7 +12,7 @@ class usermod:
             # Invoke subprocess
             subprocess.run(
 			    ["sudo", "usermod", "-aG", ",".join(map(str, groups)), user],
-			    stdout = open("archibald.log", "a"),
+			    stdout = open("logfiles/usermod.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -33,7 +35,7 @@ class systemctl:
             # Invoke subprocess
             subprocess.run(
 			    ["sudo", "systemctl", "enable"] + units,
-			    stdout = open("archibald.log", "a"),
+			    stdout = open("logfiles/systemctl.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -54,7 +56,7 @@ class systemctl:
             # Invoke subprocess
             subprocess.run(
 			    ["sudo", "systemctl", "start"] + units,
-			    stdout = open("archibald.log", "a"),
+			    stdout = open("logfiles/systemctl.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -85,7 +87,7 @@ class makepkg:
             # Invoke subprocess
             subprocess.run(
 			    ["makepkg", "-sir", "--noconfirm", "--needed"],
-			    stdout = open("archibald.log", "a"),
+			    stdout = open("logfiles/makepkg.log", "a"),
 		    	stderr = subprocess.STDOUT,
                 cwd    = cwd,
 			    check  = True,
@@ -109,7 +111,7 @@ class pacman:
             # Invoke subprocess
             subprocess.run(
 			    ["sudo", "pacman", "-S", "--noconfirm", "--needed"] + pkgs,
-			    stdout = open("archibald.log", "a"),
+			    stdout = open("logfiles/pacman.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -130,7 +132,7 @@ class pacman:
             # Invoke subprocess
             subprocess.run(
                 ["pacman", "-Qs"] + pkgs,
-                stdout = open("archibald.log", "a"),
+                stdout = open("logfiles/pacman.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -161,7 +163,7 @@ class paru:
             # Invoke subprocess
             subprocess.run(
 			    ["paru", "-S", "--noconfirm"] + pkgs,
-			    stdout = open("archibald.log", "a"),
+			    stdout = open("logfiles/paru.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -190,7 +192,7 @@ class flatpak:
             # Invoke subprocess
             subprocess.run(
 			    ["flatpak", "install", "-y", "-v"] + flatpaks,
-			    stdout = open("archibald.log", "a"),
+			    stdout = open("logfiles/flatpak.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -292,7 +294,7 @@ def clone(url: str, cwd: str = os.getcwd()):
         # Try git clone
         subprocess.run(
             ["git", "clone", url],
-            stdout = open("archibald.log", "a"),
+            stdout = open("logfiles/git.log", "a"),
             stderr = subprocess.STDOUT,
             cwd    = cwd,
             check  = True,
@@ -342,7 +344,7 @@ def chsh(shell: str, user: str):
         # Call subprocess
         subprocess.run(
             ["sudo", "chsh", "-s", shell, user],
-            stdout = open("archibald.log", "a"),
+            stdout = open("logfiles/chsh.log", "a"),
             stderr = subprocess.STDOUT,
             check  = True,
             text   = True
@@ -362,7 +364,7 @@ def bash_c(command: str):
         # Call subprocess
         subprocess.run(
             ["bash", "-c", command],
-            stdout = open("archibald.log", "a"),
+            stdout = open("logfiles/bash.log", "a"),
             stderr = subprocess.STDOUT,
             check  = True,
             text   = True

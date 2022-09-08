@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-from lib import console, linux, setup
+from libutils import console, linux
+
+from libutils.setup import resolve
 from profiles import profiles_strap
 
 def main():
@@ -13,26 +15,22 @@ def main():
 			console.log("This is not Arch Linux.", "err")
 			exit(1)
 	
-	username, p_dict, index = linux.whoami(), profiles_strap(), 1
+	username, p_dict = linux.whoami(), profiles_strap()
 
 	console.log(f"Welcome {username}, select a profile:")
 	
-	for P in p_dict:
-		console.log(f"{index}) {p_dict[P].name}", "nof")
-		index += 1
+	for i, P in enumerate(p_dict):
+		console.log(f"{i+1}) {p_dict[P].name}", "nof")
 
 	try:
 
 		# intGet makes sure this is an integer input
-		input = console.intGet(f"Answer: ")
-		while input <= 0 or input > len(p_dict):
-
-			# Repeat input until a valid answer is given
-			console.log("Number out of range, try again.", "wrn")
-			input = console.intGet(f"Answer: ")
-
+		input = console.intGet(1, len(p_dict), "Answer: ")
+		
 		# Configure selected profile
-		setup.resolve(p_dict, input-1, username)
+		if not resolve(p_dict, input-1, username):
+			console.log("A problem occurred, check archibald.log!", "err")
+			exit(1)
 
 		# Conclusion
 		console.log("All operations completed, please reboot!", "suc")

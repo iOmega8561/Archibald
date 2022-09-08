@@ -1,9 +1,9 @@
-from lib import console, linux
+from libutils import console, linux
 
-def __fatal():
+def __fatal(msg: str):
 
-	console.log("Something went wrong, check archibald.log.", "err")
-	exit(1)
+	console.log(f"{msg}", "wrn")
+	return False
 
 def __parse_pci(gfxd):
 	
@@ -20,6 +20,8 @@ def __parse_pci(gfxd):
 			# If is found, add packages to profile.pkgs
 			console.log(f"Found {device} device!", "suc")
 			return gfxd[device]
+	
+	# Return empty list
 	return []
 
 def __apply(profile, user: str):
@@ -39,7 +41,7 @@ def __apply(profile, user: str):
 		console.log("Installing packages (may take some time).", "exc")
 
 		if not linux.pacman.S(profile.pkgs):
-			__fatal()
+			return __fatal("Could not install packages")
 
 	if profile.files:
 
@@ -53,38 +55,38 @@ def __apply(profile, user: str):
 		console.log("Setting user groups.", "exc")
 
 		if not linux.usermod.aG(profile.groups, user):
-			__fatal()
+			return __fatal("Could not set user groups")
 
 	if profile.units:
 		
-		console.log("Enabling systend units.", "exc")
+		console.log("Enabling systemd units.", "exc")
 
 		if not linux.systemctl.enable(profile.units):
-			__fatal()
+			return __fatal("Could not enable systemd units")
 	
 	if profile.shell:
 
 		console.log("Changing user shell.", "exc")
 
 		if not linux.chsh(profile.shell, user):
-			console.log("Could not change shell.", "wrn")
+			return __fatal("Could not change shell.")
 	
 	if profile.flatpaks:
 
 		console.log("Installing flatpaks.", "exc")
 
 		if not linux.flatpak.install(profile.flatpaks):
-			console.log("Could not install flatpaks.", "wrn")
+			return __fatal("Could not install flatpaks.")
 	
 	if profile.aur and user != "root":
 
 		console.log("Installing paru and AUR packages.", "exc")
 
 		if not linux.paru.setup():
-			console.log("Could not install paru.", "wrn")
+			return __fatal("Could not install paru.")
 		
 		elif not linux.paru.S(profile.aur):
-			console.log("Could not install aur packages.", "wrn")
+			return __fatal("Could not install aur packages.")
 
 	if profile.bash:
 		
@@ -92,6 +94,8 @@ def __apply(profile, user: str):
 		
 		for command in profile.bash:
 			linux.bash_c(command)
+	
+	return True
 
 __resolved = []
 
@@ -103,41 +107,30 @@ def resolve(p_dict: dict, index: int, user: str = linux.whoami()):
 	# Get key from caller index
 	key = indexed[index]
 
-	# Check if profile has dependencies
-	if not p_dict[key].deps:
-
-		# If not just apply profile and return
-		__apply(p_dict[key], user)
-
-		# Append profile to resolved
-		__resolved.append(key)
-		return
-
 	# Iter profile dependencies list
-	for dep in p_dict[key].deps:
+	for dep in p_dict[key].deps if p_dict[key].deps else []:
 
 		# Check dependency exists and not duplicate
 		if p_dict[dep] and dep not in __resolved:
 
+			# If yes, resolve it's dependencies
+			if not resolve(p_dict, indexed.index(dep), user):
+				return False
+			
 			# Append dependency as resolved
 			__resolved.append(dep)
-
-			# If yes, resolve it's dependencies
-			resolve(p_dict, indexed.index(dep), user)
 		
-		elif dep in __resolved:
-
-			# Just skip dependency
-			continue
-
-		else:
+		elif dep not in __resolved:
 
 			# If does not exist, exit
 			console.log(f"Missing dep. {dep} required by {key}", "wrn")
-			__fatal()
+			return False
 
 	# Apply desired profile
-	__apply(p_dict[key], user)
+	if not __apply(p_dict[key], user):
+		return False
 	
 	# Append profile to resolved
 	__resolved.append(key)
+
+	return True
