@@ -13,9 +13,9 @@ A sudo user must be configured and used to run Archibald.
 ### When ready
 Then you can simply ```git clone``` this repo and
 ```
-cd Archibald
-chmod +x archibald
-./archibald
+cd archibald
+chmod +x archibald.py
+./archibald.py
 ```
 Profiles are found under Archibald/profiles/. More on it down below.
 
