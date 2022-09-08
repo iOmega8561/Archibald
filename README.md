@@ -1,4 +1,4 @@
-# Archibald
+# archibald
 ## Disclaimer
 This is a personal project, started for fun and personal purposes only. You DO take responsability if this breaks your installation. 
 
