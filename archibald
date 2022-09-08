@@ -29,7 +29,7 @@ def main():
 		
 		# Configure selected profile
 		if not resolve(p_dict, input-1, username):
-			console.log("A problem occurred, check archibald.log!", "err")
+			console.log("A problem occurred, check log files!", "err")
 			exit(1)
 
 		# Conclusion
