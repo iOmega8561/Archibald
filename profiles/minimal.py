@@ -4,9 +4,9 @@ pkgs = ["acpi", "acpid", "acpi_call", "base-devel", "usbutils", "fish", "fisher"
 
 units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups"]
 
-shell    = "/bin/fish"
+shell = "/bin/fish"
 
-files   = {
+files = {
     ".bashrc": [
         "{home}",
         "# misc\nexport EDITOR=nano"
