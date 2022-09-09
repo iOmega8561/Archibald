@@ -1,6 +1,6 @@
 deps     = ["gnome"]
 
-name     = "iOmega8561 custom"
+name     = "iOmega8561"
 
 flatpaks = ["com.github.tchx84.Flatseal", "org.gnome.TextEditor", "org.gnome.Boxes"]
 
