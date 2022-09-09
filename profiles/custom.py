@@ -1,9 +1,12 @@
 deps     = ["gnome"]
 
-name     = "Custom"
+name     = "iOmega8561 custom"
 
-flatpaks = ["com.github.tchx84.Flatseal", "com.github.GradienceTeam.Gradience", "org.gnome.Boxes"]
+flatpaks = ["com.github.tchx84.Flatseal", "org.gnome.TextEditor", "org.gnome.Boxes"]
 
-aur      = ["adw-gtk3"]
+aur      = ["adw-gtk3", "gnome-console"]
 
-bash     = ["sudo rm -f /usr/share/applications/{avahi-discover.desktop,bssh.desktop,bvnc.desktop}"]
+bash     = [
+    "sudo rm -f /usr/share/applications/{avahi-discover.desktop,bssh.desktop,bvnc.desktop}",
+    "sudo pacman -Rcns --noconfirm gnome-terminal gedit"
+]
