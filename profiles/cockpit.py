@@ -1,6 +1,6 @@
 deps    = ["minimal"]
 
-name    = "Cockpit"
+name    = "Cockpit server"
 
 pkgs    = ["screen", "cockpit", "udisks2", "cockpit-storaged", "dmidecode", "dnsmasq", "qemu-base", "libvirt", "virt-install", "cockpit-machines", "docker"]
 

@@ -1,6 +1,6 @@
 deps = ["minimal"]
 
-name = "Display Server"
+name = "Display ready"
 
 gfxd     = {
     "NVIDIA Corporation": ["dkms", "nvidia-dkms", "nvidia-prime"],
