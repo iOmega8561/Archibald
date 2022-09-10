@@ -1,6 +1,6 @@
 name = "Minimal setup"
 
-pkgs = ["acpi", "acpid", "acpi_call", "base-devel", "usbutils", "fish", "fisher", "net-tools", "gnu-netcat", "openssh", "git", "nano", "networkmanager", "bluez-tools", "cronie", "htop", "polkit", "cups", "cups-pdf", "splix"]
+pkgs = ["acpi", "acpid", "acpi_call", "base-devel", "usbutils", "fish", "fisher", "net-tools", "gnu-netcat", "openssh", "git", "nano", "networkmanager", "bluez-tools", "cronie", "htop", "polkit", "cups", "cups-pdf", "splix", "fuse"]
 
 units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups"]
 
