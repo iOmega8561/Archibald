@@ -1,4 +1,4 @@
-import subprocess, os
+import subprocess, os, json
 
 os.makedirs("logfiles", exist_ok=True)
 
@@ -240,6 +240,41 @@ def mkdir(path: str):
         check = True,
         text = True
     )
+
+def lsblk_json():
+    lsblk = subprocess.run(
+        ["lsblk", "-J", "-fs", "--output=NAME,FSTYPE,UUID,MOUNTPOINTS"],
+        stdout = subprocess.PIPE,
+        stderr = subprocess.STDOUT,
+        check  = True,
+        text   = True
+    )
+
+    blockdevices = json.loads(lsblk.stdout)
+
+    return blockdevices["blockdevices"]
+
+def findmount(mountpoint: str):
+
+    # Get block devices from lsblk
+    blockdevices = lsblk_json()
+
+    for device in blockdevices:
+            
+        # Check if mountpoint exists in device mountpoints
+        if mountpoint in device["mountpoints"]:
+
+            # If yes, return device
+            return device
+
+        # Check every device child if it has any
+        for child in device["children"] if "children" in device.keys() else []:
+
+            # Check if mountpoint exists
+            if mountpoint in child["mountpoints"]:
+
+                # Return child
+                return child
 
 def lspci():
     
