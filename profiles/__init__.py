@@ -92,9 +92,9 @@ class profile:
 				# Just copy attribute value
 				setattr(self, attr, getattr(obj, attr))
 
-def profiles_strap():
+def load():
 
-	dir, profiles_store = dirname(__file__), {}
+	dir, profiles = dirname(__file__), {}
 
 	for f in listdir(dir):
 
@@ -109,6 +109,6 @@ def profiles_strap():
 		obj = __import__(f"profiles.{f}", fromlist=[""])
 
 		# Strap profile
-		profiles_store[f] = profile(f, obj)
+		profiles[f] = profile(f, obj)
 	
-	return profiles_store
+	return profiles

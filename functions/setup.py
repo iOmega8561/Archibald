@@ -1,4 +1,4 @@
-from libutils import console, linux
+from functions import console, linux
 
 def __fatal(msg: str):
 

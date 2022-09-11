@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-from libutils import console, linux
+from functions import console, linux
 
-from libutils.setup import resolve
-from profiles import profiles_strap
+from functions.setup import resolve
+from profiles import load
 
 def main():
 
@@ -15,7 +15,7 @@ def main():
 			console.log("This is not Arch Linux.", "err")
 			exit(1)
 	
-	username, p_dict = linux.whoami(), profiles_strap()
+	username, p_dict = linux.whoami(), load()
 
 	console.log(f"Welcome {username}, select a profile:")
 	
