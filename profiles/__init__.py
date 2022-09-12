@@ -1,6 +1,5 @@
 from types import ModuleType
-from os.path import dirname
-from os import listdir
+import os
 
 class profile:
 
@@ -94,9 +93,9 @@ class profile:
 
 def load():
 
-	dir, profiles = dirname(__file__), {}
+	dir, profiles = os.path.dirname(__file__), {}
 
-	for f in listdir(dir):
+	for f in os.listdir(dir):
 
 		# Skip if name starts with __
 		if f[0:2] == "__":

@@ -1,6 +1,8 @@
 import subprocess, os, json
 
-os.makedirs("logfiles", exist_ok=True)
+libpath = os.path.abspath(os.path.dirname(__file__))
+logpath = f"{libpath}/../logfiles"
+os.makedirs(logpath, exist_ok=True)
 
 class usermod:
 
@@ -12,7 +14,7 @@ class usermod:
             # Invoke subprocess
             subprocess.run(
 			    ["sudo", "usermod", "-aG", ",".join(map(str, groups)), user],
-			    stdout = open("logfiles/usermod.log", "a"),
+			    stdout = open(f"{logpath}/usermod.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -35,7 +37,7 @@ class systemctl:
             # Invoke subprocess
             subprocess.run(
 			    ["sudo", "systemctl", "enable"] + units,
-			    stdout = open("logfiles/systemctl.log", "a"),
+			    stdout = open(f"{logpath}/systemctl.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -56,7 +58,7 @@ class systemctl:
             # Invoke subprocess
             subprocess.run(
 			    ["sudo", "systemctl", "start"] + units,
-			    stdout = open("logfiles/systemctl.log", "a"),
+			    stdout = open(f"{logpath}/systemctl.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -87,7 +89,7 @@ class makepkg:
             # Invoke subprocess
             subprocess.run(
 			    ["makepkg", "-sir", "--noconfirm", "--needed"],
-			    stdout = open("logfiles/makepkg.log", "a"),
+			    stdout = open(f"{logpath}/makepkg.log", "a"),
 		    	stderr = subprocess.STDOUT,
                 cwd    = cwd,
 			    check  = True,
@@ -111,7 +113,7 @@ class pacman:
             # Invoke subprocess
             subprocess.run(
 			    ["sudo", "pacman", "-S", "--noconfirm", "--needed"] + pkgs,
-			    stdout = open("logfiles/pacman.log", "a"),
+			    stdout = open(f"{logpath}/pacman.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -132,7 +134,7 @@ class pacman:
             # Invoke subprocess
             subprocess.run(
                 ["pacman", "-Qs"] + pkgs,
-                stdout = open("logfiles/pacman.log", "a"),
+                stdout = open(f"{logpath}/pacman.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -163,7 +165,7 @@ class paru:
             # Invoke subprocess
             subprocess.run(
 			    ["paru", "-S", "--noconfirm"] + pkgs,
-			    stdout = open("logfiles/paru.log", "a"),
+			    stdout = open(f"{logpath}/paru.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -192,7 +194,7 @@ class flatpak:
             # Invoke subprocess
             subprocess.run(
 			    ["flatpak", "install", "-y", "-v"] + flatpaks,
-			    stdout = open("logfiles/flatpak.log", "a"),
+			    stdout = open(f"{logpath}/flatpak.log", "a"),
 		    	stderr = subprocess.STDOUT,
 			    check  = True,
 			    text   = True
@@ -329,7 +331,7 @@ def clone(url: str, cwd: str = os.getcwd()):
         # Try git clone
         subprocess.run(
             ["git", "clone", url],
-            stdout = open("logfiles/git.log", "a"),
+            stdout = open(f"{logpath}/git.log", "a"),
             stderr = subprocess.STDOUT,
             cwd    = cwd,
             check  = True,
@@ -379,7 +381,7 @@ def chsh(shell: str, user: str):
         # Call subprocess
         subprocess.run(
             ["sudo", "chsh", "-s", shell, user],
-            stdout = open("logfiles/chsh.log", "a"),
+            stdout = open(f"{logpath}/chsh.log", "a"),
             stderr = subprocess.STDOUT,
             check  = True,
             text   = True
@@ -399,7 +401,7 @@ def bash_c(command: str):
         # Call subprocess
         subprocess.run(
             ["bash", "-c", command],
-            stdout = open("logfiles/bash.log", "a"),
+            stdout = open(f"{logpath}/bash.log", "a"),
             stderr = subprocess.STDOUT,
             check  = True,
             text   = True

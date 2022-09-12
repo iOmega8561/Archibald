@@ -1,8 +1,6 @@
 #!/usr/bin/python3
-from functions import console, linux
-
-from functions.setup import resolve
-from profiles import load
+from functions import console, linux, setup
+from profiles import load as load_profiles
 
 def main():
 
@@ -15,7 +13,7 @@ def main():
 			console.log("This is not Arch Linux.", "err")
 			exit(1)
 	
-	username, p_dict = linux.whoami(), load()
+	username, p_dict = linux.whoami(), load_profiles()
 
 	console.log(f"Welcome {username}, select a profile:")
 	
@@ -28,7 +26,7 @@ def main():
 		input = console.intGet(1, len(p_dict), "Answer: ")
 		
 		# Configure selected profile
-		if not resolve(p_dict, input-1, username):
+		if not setup.resolve(p_dict, input-1, username):
 			console.log("A problem occurred, check log files!", "err")
 			exit(1)
 

@@ -1,12 +1,12 @@
 # archibald
 ## Disclaimer
-This is a personal project, started for fun and personal purposes only. You DO take responsability if this breaks your installation. 
+This is a personal project, it's not meant to be a production-ready application so use it carefully.
 
 ## What's this?
-Archibald is a python utility, meant to be used on a fresh system, that can help the user automate post-install procedures, such as installing a desktop environment or writing config files somewhere in the system.
+Archibald is a glorified script, meant to be used on a fresh system, that can help the user automate post-install procedures, such as installing a desktop environment or writing config files somewhere in the system.
 
 ## How to use
-Archibald can be run either in arch-chroot or a booted system.
+Archibald can be run either in arch-chroot or a booted system. It is meant to be run like a shell script, so it cannot be installed as a python module.
 ### Requirements
 Python 3 must be installed and path-accessible
 A sudo user must be configured and used to run Archibald.
@@ -20,7 +20,7 @@ chmod +x archibald.py
 Profiles are found under Archibald/profiles/. More on it down below.
 
 ## Configuration
-Profiles can be created and dropped under Archibald/profiles/, they must respect a specific set of attributes that will be parsed by Archibald at runtime. Here is an example.py profile:
+Profiles can be created and dropped under archibald/profiles/, they must respect a specific set of attributes that will be parsed by Archibald at runtime. Here is an example.py profile:
 ```
 deps     = ["a_profile", "another"]              # Profile dependencies            | list, can omit
 
