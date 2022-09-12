@@ -8,7 +8,7 @@ Archibald is a glorified script, meant to be used on a fresh system, that can he
 ## How to use
 Archibald can be run either in arch-chroot or a booted system. It is meant to be run like a shell script, so it cannot be installed as a python module.
 ### Requirements
-Python 3 must be installed and path-accessible
+Python 3 must be installed and path-accessible.
 A sudo user must be configured and used to run Archibald.
 ### When ready
 Then you can simply ```git clone``` this repo and
