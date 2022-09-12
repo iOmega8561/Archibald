@@ -4,7 +4,7 @@ pkgs  = ["acpi", "acpid", "acpi_call", "base-devel", "usbutils", "zsh", "zsh-com
 
 units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups"]
 
-shell = "/bin/fish"
+shell = "/bin/zsh"
 
 files = {
 
