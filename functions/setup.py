@@ -7,6 +7,8 @@ def __fatal(msg: str):
 
 def __parse_pci(gfxd):
 	
+	to_install = []
+
 	# Try to find known pci devs from lspci
 	console.log("Parsing pci devices.", "exc")
 	pcidevs = linux.lspci()
@@ -19,10 +21,9 @@ def __parse_pci(gfxd):
 
 			# If is found, add packages to profile.pkgs
 			console.log(f"Found {device} device!", "suc")
-			return gfxd[device]
-	
-	# Return empty list
-	return []
+			to_install += gfxd[device]
+
+	return to_install
 
 def __apply(profile, user: str):
 	
