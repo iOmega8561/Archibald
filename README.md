@@ -10,6 +10,7 @@ Archibald can be run either in arch-chroot or a booted system. It is meant to be
 ### Requirements
 Python 3 must be installed and path-accessible.
 A sudo user must be configured and used to run Archibald.
+For NVIDIA users, please install the right kernel headers before running Archiabald, this is required to build nvidia drivers with dkms.
 ### When ready
 Then you can simply ```git clone``` this repo and
 ```
