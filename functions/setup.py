@@ -16,7 +16,7 @@ def __parse_pci(gfxd):
 	for device in gfxd:
 
 		# Repeat match for every user defined driver group
-		match = [f"VGA compatible controller: {device}", f"Display controller: {device}"]
+		match = [f"VGA compatible controller: {device}", f"Display controller: {device}", f"3D controller: {device}"]
 		if any(x in pcidevs for x in match):
 
 			# If is found, add packages to profile.pkgs
