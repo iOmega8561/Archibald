@@ -8,8 +8,8 @@ Archibald is a glorified script, meant to be used on a fresh system, that can he
 ## How to use
 Archibald can be run either in arch-chroot or a booted system. It is meant to be run as a standalone application, so it cannot be installed as a python module yet or used in another project (Maybe in the future).
 ### Requirements
-Python 3 is needed
-A sudo user must be configured to use Archibald correctly as some of it's functions require running as a non root user.
+Python 3 is needed.
+A standard user with SUDO permissions must be configured to use Archibald correctly as some of it's functions require running as a non root user.
 For NVIDIA users, please install the right kernel headers before running Archiabald, this is required to build nvidia drivers with dkms.
 ### When ready
 Then you can simply ```git clone``` this repo and
