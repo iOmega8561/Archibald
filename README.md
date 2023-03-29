@@ -1,15 +1,15 @@
 # archibald
 ## Disclaimer
-This is a personal project, it's not meant to be a production-ready application so use it carefully.
+This is a learning project, and although i use it quite a lot without issues, it's really not production-ready so use it carefully.
 
 ## What's this?
 Archibald is a glorified script, meant to be used on a fresh system, that can help the user automate post-install procedures, such as installing a desktop environment or writing config files somewhere in the system.
 
 ## How to use
-Archibald can be run either in arch-chroot or a booted system. It is meant to be run like a shell script, so it cannot be installed as a python module.
+Archibald can be run either in arch-chroot or a booted system. It is meant to be run as a standalone application, so it cannot be installed as a python module yet or used in another project (Maybe in the future).
 ### Requirements
-Python 3 must be installed and path-accessible.
-A sudo user must be configured and used to run Archibald.
+Python 3 is needed
+A sudo user must be configured to use Archibald correctly as some of it's functions require running as a non root user.
 For NVIDIA users, please install the right kernel headers before running Archiabald, this is required to build nvidia drivers with dkms.
 ### When ready
 Then you can simply ```git clone``` this repo and
@@ -18,7 +18,7 @@ cd archibald
 chmod +x archibald.py
 ./archibald.py
 ```
-Profiles are found under Archibald/profiles/. More on it down below.
+Configuration Profiles are found under Archibald/profiles/. More on it down below.
 
 ## Configuration
 Profiles can be created and dropped under archibald/profiles/, they must respect a specific set of attributes that will be parsed by Archibald at runtime. Here is an example.py profile:
