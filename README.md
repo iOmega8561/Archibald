@@ -1,4 +1,4 @@
-# archibald
+# Archibald
 ## Disclaimer
 This is a learning project, and although i use it quite a lot without issues, it's really not production-ready so use it carefully.
 
