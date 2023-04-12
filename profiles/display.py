@@ -3,7 +3,7 @@ deps = ["minimal"]
 name = "Display ready"
 
 gfxd = {
-    "NVIDIA Corporation": ["nvidia-dkms", "nvidia-prime"],
+    "NVIDIA Corporation": ["nvidia-dkms"], #laptops should also install nvidia-prime
     "Advanced Micro Devices": ["xf86-video-amdgpu", "libva-mesa-driver", "vulkan-radeon", "mesa-vdpau"],
     "Intel Corporation": ["xf86-video-intel", "libva-mesa-driver", "vulkan-intel", "mesa-vdpau"]
 }
