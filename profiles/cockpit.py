@@ -6,4 +6,4 @@ pkgs   = ["screen", "cockpit", "firewalld", "udisks2", "cockpit-storaged", "dmid
 
 units  = ["sshd", "libvirtd", "cockpit.socket"]
 
-groups = ["qemu", "libvirt"]
+groups = ["qemu", "libvirt", "kvm"]
