@@ -3,13 +3,13 @@
 This is a learning project, and although i use it quite a lot without issues, it's really not production-ready so use it carefully.
 ## What's this?
 Archibald is a utility meant to be used on a fresh system, that can help the user automate post-install procedures, such as installing a desktop environment or writing config files somewhere in the system.
-# Why just not use archinstall?
+### Why just not use archinstall?
 Archibald is for people who like to perform the manual installation by hand-book, but can't bother to install and configure every time their favourite set of packages afterwards. Custom window manager setup? No issue for Archibald, create your config file and it's done.
 ### Requirements
 Python 3 is needed.
 A standard user with SUDO permissions must be configured to use Archibald correctly as some of it's functions require running as a non root user.
 Users with NVIDIA hardware should install the right headers for their current kernel before running Archiabald, this is required to build nvidia drivers km with dkms.
-## How to use
+### How to use
 Archibald can be run either in arch-chroot or a booted system. It is meant to be run as a standalone application, so it cannot be installed as a python module yet or used in another project (Maybe in the future).
 ### When ready
 Then you can simply ```git clone``` this repo and
