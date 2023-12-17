@@ -32,7 +32,7 @@ def main():
     try:
 
         # intGet makes sure this is an integer input
-        consoleinput = console.intGet(1, len(p_dict), "Answer: ")
+        consoleinput = console.intget(1, len(p_dict), "Answer: ")
 
         # Configure selected profile
         if not setup.resolve(p_dict, consoleinput-1, username):

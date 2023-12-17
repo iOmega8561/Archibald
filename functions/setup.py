@@ -1,137 +1,146 @@
+"""This module contains all the necessary
+   logic to dependency-resolve and apply profiles to the host system"""
+
 from functions import console, linux
 
 def __fatal(msg: str):
 
-	console.log(f"{msg}", "wrn")
-	return False
+    console.log(f"{msg}", "wrn")
+    return False
 
 def __parse_pci(gfxd):
-	
-	to_install = []
 
-	# Try to find known pci devs from lspci
-	console.log("Parsing pci devices.", "exc")
-	pcidevs = linux.lspci()
+    # Try to find known pci devs from lspci
+    console.log("Parsing pci devices.", "exc")
+    pcidevs = linux.lspci()
 
-	for device in gfxd:
+    for device in gfxd:
 
-		# Repeat match for every user defined driver group
-		match = [f"VGA compatible controller: {device}", f"Display controller: {device}", f"3D controller: {device}"]
-		if any(x in pcidevs for x in match):
+        # Repeat match for every user defined driver group
+        match = [
+            f"VGA compatible controller: {device}",
+            f"Display controller: {device}",
+            f"3D controller: {device}"
+        ]
 
-			# If is found, add packages to profile.pkgs
-			console.log(f"Found {device} device!", "suc")
-			to_install += gfxd[device]
+        if any(x in pcidevs for x in match):
 
-	return to_install
+            # If is found, add packages to profile.pkgs
+            console.log(f"Found {device} device!", "suc")
+            return gfxd[device]
+
+    return []
 
 def __apply(profile, user: str):
-	
-	console.log(f"Resolving profile {profile.name}", "wrn")
 
-	if profile.gfxd and not profile.pkgs:
+    console.log(f"Resolving profile {profile.name}", "wrn")
 
-		profile.pkgs = __parse_pci(profile.gfxd)
+    if not profile.pkgs:
 
-	elif profile.gfxd:
-		
-		profile.pkgs += __parse_pci(profile.gfxd)
+        profile.pkgs = []
 
-	if profile.pkgs:
-		
-		console.log("Installing packages (may take some time).", "exc")
+    if profile.gfxd:
 
-		if not linux.pacman.S(profile.pkgs):
-			return __fatal("Could not install packages")
+        profile.pkgs += __parse_pci(profile.gfxd)
 
-	if profile.files:
+    if profile.pkgs:
 
-		console.log("Creating configuration files.", "exc")
+        console.log("Installing packages (may take some time).", "exc")
 
-		for f in profile.files:
-			linux.tee(f.path, f.name, f.text)
+        if not linux.pacman.S(profile.pkgs):
+            return __fatal("Could not install packages")
 
-	if profile.groups:
+    if profile.files:
 
-		console.log("Setting user groups.", "exc")
+        console.log("Creating configuration files.", "exc")
 
-		if not linux.usermod.aG(profile.groups, user):
-			return __fatal("Could not set user groups")
+        for f in profile.files:
+            linux.tee(f.path, f.name, f.text)
 
-	if profile.units:
-		
-		console.log("Enabling systemd units.", "exc")
+    if profile.groups:
 
-		if not linux.systemctl.enable(profile.units):
-			return __fatal("Could not enable systemd units")
-	
-	if profile.shell:
+        console.log("Setting user groups.", "exc")
 
-		console.log("Changing user shell.", "exc")
+        if not linux.usermod.aG(profile.groups, user):
+            return __fatal("Could not set user groups")
 
-		if not linux.chsh(profile.shell, user):
-			return __fatal("Could not change shell.")
-	
-	if profile.flatpaks:
+    if profile.units:
 
-		console.log("Installing flatpaks.", "exc")
+        console.log("Enabling systemd units.", "exc")
 
-		if not linux.flatpak.install(profile.flatpaks):
-			return __fatal("Could not install flatpaks.")
-	
-	if profile.aur and user != "root":
+        if not linux.systemctl.enable(profile.units):
+            return __fatal("Could not enable systemd units")
 
-		console.log("Installing paru and AUR packages.", "exc")
+    if profile.shell:
 
-		if not linux.paru.setup():
-			return __fatal("Could not install paru.")
-		
-		elif not linux.paru.S(profile.aur):
-			return __fatal("Could not install aur packages.")
+        console.log("Changing user shell.", "exc")
 
-	if profile.bash:
-		
-		console.log("Custom shell commands.", "exc")
-		
-		for command in profile.bash:
-			linux.bash_c(command)
-	
-	return True
+        if not linux.chsh(profile.shell, user):
+            return __fatal("Could not change shell.")
+
+    if profile.flatpaks:
+
+        console.log("Installing flatpaks.", "exc")
+
+        if not linux.flatpak.install(profile.flatpaks):
+            return __fatal("Could not install flatpaks.")
+
+    if profile.aur and user != "root":
+
+        console.log("Installing paru and AUR packages.", "exc")
+
+        if not linux.paru.setup():
+            return __fatal("Could not install paru.")
+
+        if not linux.paru.S(profile.aur):
+            return __fatal("Could not install aur packages.")
+
+    if profile.bash:
+
+        console.log("Custom shell commands.", "exc")
+
+        for command in profile.bash:
+            linux.bash_c(command)
+
+    return True
 
 __resolved = []
 
 def resolve(p_dict: dict, index: int, user: str = linux.whoami()):
-	
-	# Get indexed keys list
-	indexed = list(p_dict.keys())
-	
-	# Get key from caller index
-	key = indexed[index]
 
-	# Iter profile dependencies list
-	for dep in p_dict[key].deps if p_dict[key].deps else []:
+    """This function is responsable of 
+       dependency resolving among profiles"""
 
-		# Check dependency exists and not duplicate
-		if p_dict[dep] and dep not in __resolved:
+    # Get indexed keys list
+    indexed = list(p_dict.keys())
 
-			# If yes, resolve it's dependencies
-			if not resolve(p_dict, indexed.index(dep), user):
-				return False
-			
-			# Append dependency as resolved
-			__resolved.append(dep)
-		
-		elif dep not in __resolved:
+    # Get key from caller index
+    key = indexed[index]
 
-			# If does not exist, exit
-			console.log(f"Missing dep. {dep} required by {key}", "wrn")
-			return False
+    # Iter profile dependencies list
+    for dep in p_dict[key].deps if p_dict[key].deps else []:
 
-	# Apply desired profile
-	if not __apply(p_dict[key], user):
-		return False
-	
-	# Append profile to resolved
-	__resolved.append(key)
+        # Check dependency exists and not duplicate
+        if p_dict[dep] and dep not in __resolved:
 
-	return True
+            # If yes, resolve it's dependencies
+            if not resolve(p_dict, indexed.index(dep), user):
+                return False
+
+            # Append dependency as resolved
+            __resolved.append(dep)
+
+        elif dep not in __resolved:
+
+            # If does not exist, exit
+            console.log(f"Missing dep. {dep} required by {key}", "wrn")
+            return False
+
+    # Apply desired profile
+    if not __apply(p_dict[key], user):
+        return False
+
+    # Append profile to resolved
+    __resolved.append(key)
+
+    return True
