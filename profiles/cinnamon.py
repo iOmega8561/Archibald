@@ -1,7 +1,23 @@
-deps  = ["display"]
+"""Partial Cinnamon Desktop Environment package collection"""
 
-name  = "Cinnamon"
+deps = [
+    "display"
+]
 
-pkgs  = ["lightdm", "lightdm-gtk-greeter", "cinnamon", "cinnamon-translations", "gnome-terminal", "gpicview", "xdg-desktop-portal-gtk", "xdg-user-dirs-gtk", "xdg-utils"]
+name = "Cinnamon"
 
-units = ["lightdm"]
+pkgs = [
+    "lightdm",
+    "lightdm-gtk-greeter",
+    "cinnamon",
+    "cinnamon-translations",
+    "gnome-terminal",
+    "gpicview",
+    "xdg-desktop-portal-gtk",
+    "xdg-user-dirs-gtk",
+    "xdg-utils"
+]
+
+units = [
+    "lightdm"
+]

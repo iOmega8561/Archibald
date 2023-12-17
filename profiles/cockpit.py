@@ -1,9 +1,37 @@
-deps   = ["minimal"]
+"""Bare minimum comodities for a home server machine"""
 
-name   = "Cockpit server"
+deps = [
+    "minimal"
+]
 
-pkgs   = ["screen", "cockpit", "firewalld", "udisks2", "cockpit-storaged", "dmidecode", "dnsmasq", "qemu-base", "libvirt", "virt-install", "cockpit-machines", "cockpit-podman", "podman", "podman-docker", "cockpit-pcp"]
+name = "Cockpit server"
 
-units  = ["sshd", "libvirtd", "cockpit.socket"]
+pkgs = [
+    "screen",
+    "cockpit",
+    "firewalld",
+    "udisks2",
+    "cockpit-storaged",
+    "dmidecode",
+    "dnsmasq",
+    "qemu-base",
+    "libvirt",
+    "virt-install",
+    "cockpit-machines",
+    "cockpit-podman",
+    "podman",
+    "podman-docker",
+    "cockpit-pcp"
+]
 
-groups = ["qemu", "libvirt", "kvm"]
+units = [
+    "sshd",
+    "libvirtd",
+    "cockpit.socket"
+]
+
+groups = [
+    "qemu",
+    "libvirt",
+    "kvm"
+]

@@ -1,8 +1,43 @@
-name  = "Minimal setup"
+"""Bare minimum comodities to get a usable cli system"""
 
-pkgs  = ["acpi", "acpid", "acpi_call", "base-devel", "usbutils", "zsh", "zsh-completions", "zsh-autosuggestions", "zsh-syntax-highlighting", "net-tools", "gnu-netcat", "openssh", "git", "nano", "networkmanager", "bluez-tools", "cronie", "htop", "polkit", "cups", "cups-pdf", "splix", "fuse", "ttf-liberation", "ttf-droid", "noto-fonts-emoji"]
+name = "Minimal setup"
 
-units = ["acpid", "bluetooth", "NetworkManager", "cronie", "cups"]
+pkgs = [
+    "acpi",
+    "acpid",
+    "acpi_call",
+    "base-devel",
+    "usbutils",
+    "zsh",
+    "zsh-completions",
+    "zsh-autosuggestions",
+    "zsh-syntax-highlighting",
+    "net-tools",
+    "gnu-netcat",
+    "openssh",
+    "git",
+    "nano",
+    "networkmanager",
+    "bluez-tools",
+    "cronie",
+    "htop",
+    "polkit",
+    "cups",
+    "cups-pdf",
+    "splix",
+    "fuse",
+    "ttf-liberation",
+    "ttf-droid",
+    "noto-fonts-emoji"
+]
+
+units = [
+    "acpid",
+    "bluetooth",
+    "NetworkManager",
+    "cronie",
+    "cups"
+]
 
 shell = "/bin/zsh"
 
