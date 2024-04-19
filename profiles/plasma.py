@@ -10,7 +10,6 @@ pkgs = [
     "plasma-desktop",
     "sddm",
     "sddm-kcm",
-    "plasma-wayland-session",
     "dolphin",
     "systemsettings",
     "plasma-pa",
