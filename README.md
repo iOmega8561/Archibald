@@ -1,4 +1,6 @@
 # Archibald
+<div align="center"> <img src="./screenshot.png"> </div>
+
 Archibald is a utility meant to be used on a fresh system, that can help the user automate post-install procedures, such as installing a desktop environment or writing config files somewhere in the system.
 ### Why just not use archinstall?
 Archibald is for people who like to perform the manual installation by hand-book, but can't bother to install and configure every time their favourite set of packages afterwards. Custom window manager setup? No issue for Archibald, create your config file and it's done.
