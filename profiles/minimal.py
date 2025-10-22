@@ -13,7 +13,7 @@ pkgs = [
     "zsh-autosuggestions",
     "zsh-syntax-highlighting",
     "net-tools",
-    "gnu-netcat",
+    "openbsd-netcat",
     "openssh",
     "git",
     "nano",
