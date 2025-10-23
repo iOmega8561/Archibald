@@ -3,11 +3,11 @@
 
 __formats = {
 
-    "msg": "\033[1mMessage:\033[0m {text}",
-    "err": "\033[91mError:\033[0m {text}",
-    "wrn": "\033[91mWarning:\033[0m {text}",
-    "exc": "\033[93mExeclog:\033[0m {text}",
-    "suc": "\033[92mSuccess:\033[0m {text}",
+    "msg": "\033[1mArchibald:\033[0m {text}",
+    "err": "\033[91mArchibald:\033[0m {text}",
+    "wrn": "\033[91mArchibald:\033[0m {text}",
+    "exc": "\033[93mArchibald:\033[0m {text}",
+    "suc": "\033[92mArchibald:\033[0m {text}",
     "nof": "{text}"
 
 }
