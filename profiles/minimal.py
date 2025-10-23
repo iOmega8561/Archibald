@@ -5,7 +5,6 @@ name = "Minimal setup"
 pkgs = [
     "acpi",
     "acpid",
-    "acpi_call",
     "base-devel",
     "usbutils",
     "zsh",
@@ -18,6 +17,7 @@ pkgs = [
     "git",
     "nano",
     "networkmanager",
+    "nss-mdns",
     "bluez-tools",
     "cronie",
     "htop",
