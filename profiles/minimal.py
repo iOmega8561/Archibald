@@ -36,7 +36,8 @@ units = [
     "bluetooth",
     "NetworkManager",
     "cronie",
-    "cups"
+    "cups",
+    "avahi-daemon"
 ]
 
 shell = "/bin/zsh"
