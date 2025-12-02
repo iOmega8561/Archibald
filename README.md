@@ -1,56 +1,87 @@
-# Archibald
-<div align="center"> <img src="./screenshot.png"> </div>
+# Archibald ⚙️🐧
 
-Archibald is a utility meant to be used on a fresh system, that can help the user automate post-install procedures, such as installing a desktop environment or writing config files somewhere in the system.
-### Why just not use archinstall?
-Archibald is for people who like to perform the manual installation by hand-book, but can't bother to install and configure every time their favourite set of packages afterwards. Custom window manager setup? No issue for Archibald, create your config file and it's done.
-### Requirements
-All you need is:
-- Python3 installed on your system.
-- Sudo enabled on your user account (no root).
-- If you have NVIDIA hardware, linux-headers installed.
-### How to use
-Archibald can be run either in arch-chroot or a booted system. It is meant to be run as a standalone application, so it cannot be installed as a python module yet or used in another project (Maybe in the future).
+<div align="center">
+  <img src="./screenshot.png">
+</div>
 
-You can simply ```git clone``` this repo and
-```
+Archibald is a small utility designed to help automate **post-install tasks** on a fresh system — such as installing a desktop environment, setting up your favourite packages, or dropping configuration files in the right place.
+
+---
+
+## Why not just use *archinstall*? 🤔
+
+Archibald is for users who enjoy performing the **manual Arch Linux installation** by following the handbook, but don't want to manually reinstall and reconfigure their everyday tooling every single time.
+
+Got a custom window manager setup? A fine-tuned list of packages? Archibald handles it: write your profile once, and you're done. 💨
+
+---
+
+## Requirements 📦
+
+You only need:
+
+* Python 3
+* A user account with **sudo** privileges (*root* is actually **not supported**)
+* `linux-headers` if you’re using **NVIDIA** hardware
+
+---
+
+## How to Use 🚀
+
+Archibald can run either inside `arch-chroot` or on a fully booted system.
+It’s intended to run as a **standalone script** — not a Python module (yet 😄).
+
+Clone and run:
+
+```bash
+git clone https://github.com/.../archibald
 cd archibald
 chmod +x archibald.py
 ./archibald.py
 ```
-Configuration Profiles are found under Archibald/profiles/. More on it down below.
 
-## Configuration
-Profiles can be created and dropped under archibald/profiles/, they must respect a specific set of attributes that will be parsed by Archibald at runtime. Here is an example.py profile:
+Configuration profiles are stored under:
+
 ```
+archibald/profiles/
+```
+
+More details below.
+
+---
+
+## Configuration Profiles 🧩
+
+Profiles define exactly what Archibald should install or configure.
+Place them inside `archibald/profiles/` following specific attributes that Archibald parses at runtime.
+And yes... these are **actual python source code**.
+
+Example profile:
+
+```python
 deps     = ["a_profile", "another"]              # Profile dependencies            | list, optional
 
 name     = "Example"                             # Profile name                    | str, MANDATORY
         
 drivers  = {                                     # Graphics drivers                | dict, optional
-
     "A Gpu Manifacturer": ["driverpackage1", "mesasomething"]
-
 }
     
-pkgs     = packages.ex + packages.ex2 + .. OR pkgs = ["pkg1", "pkg2" ...]          | list, optional
+pkgs     = packages.ex + packages.ex2            # OR: pkgs = ["pkg1", "pkg2"]     | list, optional
     
 units    = ["test", "example"]                   # Systemd services to enable      | list, optional
     
-groups   = ["wheel", "example"]                  # User groups to be assigned      | list, optional
+groups   = ["wheel", "example"]                  # User groups                     | list, optional
     
-shell    = "/bin/somecustomshell"                # Custom shell binary (chsh)      | str, optional
+shell    = "/bin/somecustomshell"                # Custom shell (via chsh)         | str, optional
 
-# If aur packages are present in your profile, paru will also be installed automatically
-aur      = ["aurpkg", "another"]                 # Favourite aur packages          | list, optional
+aur      = ["aurpkg", "another"]                 # AUR packages (paru auto-install)| list, optional
 
-# If flatpak packages are present in your profile, flatpak will be installed automatically
-flatpaks = ["org.some.flatpak", "another"]       # Flatpak list                    | list, optional
+flatpaks = ["org.some.flatpak", "another"]       # Flatpak packages                | list, optional
 
-bash     = ["a command", "another command"]      # Bash arbitrary commands         | list, optional
+bash     = ["a command", "another command"]      # Arbitrary bash commands         | list, optional
 
 files    = {                                     # Custom configuration files      | dict, optional
-        
     "filename": [
         "some/system/path/like/{home}",
         "somerandomtexttoputinyourfile"
