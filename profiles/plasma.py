@@ -33,7 +33,6 @@ pkgs = [
     "partitionmanager",
     "okular",
     "xdg-desktop-portal-kde",
-    "xdg-desktop-portal-gnome",
     "xdg-utils",
     "print-manager"
 ]
