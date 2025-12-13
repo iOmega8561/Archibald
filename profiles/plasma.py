@@ -17,6 +17,7 @@ pkgs = [
     "kscreen",
     "breeze-gtk",
     "kwallet",
+    "kwalletmanager",
     "konsole",
     "bluedevil",
     "power-profiles-daemon",
