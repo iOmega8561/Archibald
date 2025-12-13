@@ -15,14 +15,12 @@ gfxd = {
     "Advanced Micro Devices": [
         "xf86-video-amdgpu",
         "libva-mesa-driver",
-        "vulkan-radeon",
-        "mesa-vdpau"
+        "vulkan-radeon"
     ],
 
     "Intel Corporation": [
         "libva-mesa-driver", 
-        "vulkan-intel", 
-        "mesa-vdpau"
+        "vulkan-intel"
     ]
 }
 
