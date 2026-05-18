@@ -24,7 +24,6 @@ pkgs = [
     "polkit",
     "cups",
     "cups-pdf",
-    "splix",
     "fuse",
     "ttf-liberation",
     "ttf-droid",
